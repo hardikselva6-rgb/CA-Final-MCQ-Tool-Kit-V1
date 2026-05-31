@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CA Final MCQ Assessment Tool </title>
+<title>CA Final MCQ Assessment Tool</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
@@ -31,8 +31,8 @@
   --border2: rgba(201,168,76,0.30);
   --radius: 14px;
   --radius-sm: 8px;
-  --glow-gold: 0 0 30px rgba(201,168,76,0.12);
 }
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
@@ -42,89 +42,51 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 }
+
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   background:
     radial-gradient(ellipse 60% 40% at 20% 10%, rgba(201,168,76,0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 50% at 80% 80%, rgba(26,158,110,0.05) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(59,130,246,0.03) 0%, transparent 70%);
+    radial-gradient(ellipse 50% 50% at 80% 80%, rgba(26,158,110,0.05) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
 }
-.screen { display: none; position: relative; z-index: 1; min-height: 100vh; }
+
+.screen { display: none; position: relative; z-index: 1; }
 .screen.active { display: block; }
 
-/* ── ANIMATIONS ── */
 @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
 @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+
 .fade-up { animation: fadeUp 0.5s ease forwards; }
 
-/* ── COMPONENTS ── */
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 12px 24px; border-radius: var(--radius-sm);
   font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
-  cursor: pointer; border: none; transition: all 0.2s; text-decoration: none;
+  cursor: pointer; border: none; transition: all 0.2s;
 }
+
 .btn-gold {
   background: linear-gradient(135deg, var(--gold), var(--gold2));
   color: var(--navy); box-shadow: 0 4px 20px rgba(201,168,76,0.3);
 }
-.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,76,0.4); }
-.btn-outline {
-  background: transparent; color: var(--gold);
-  border: 1px solid var(--border2);
-}
+
+.btn-gold:hover { transform: translateY(-2px); }
+.btn-outline { background: transparent; color: var(--gold); border: 1px solid var(--border2); }
 .btn-outline:hover { background: rgba(201,168,76,0.08); }
 .btn-emerald {
   background: linear-gradient(135deg, var(--emerald), var(--emerald2));
   color: #fff; box-shadow: 0 4px 20px rgba(26,158,110,0.3);
 }
-.btn-emerald:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(26,158,110,0.4); }
+.btn-emerald:hover { transform: translateY(-2px); }
 .btn-rose {
   background: linear-gradient(135deg, var(--rose), var(--rose2));
-  color: #fff; box-shadow: 0 4px 20px rgba(224,92,111,0.3);
+  color: #fff;
 }
-.btn-rose:hover { transform: translateY(-2px); }
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px;
-}
-.badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 4px 10px; border-radius: 99px; font-size: 11px; font-weight: 500;
-}
-.badge-gold { background: rgba(201,168,76,0.15); color: var(--gold2); }
-.badge-green { background: rgba(26,158,110,0.15); color: var(--emerald2); }
-.badge-rose { background: rgba(224,92,111,0.15); color: var(--rose2); }
-.badge-sky { background: rgba(59,130,246,0.15); color: var(--sky2); }
-.badge-amber { background: rgba(245,158,11,0.15); color: #fbbf24; }
 
-/* ── TAB SYSTEM ── */
-.tabs-container {
-  display: flex; gap: 12px; border-bottom: 1px solid var(--border);
-  padding: 0 24px; margin-bottom: 24px;
-}
-.tab-btn {
-  padding: 14px 20px; background: transparent; border: none;
-  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
-  color: var(--text3); cursor: pointer; transition: all 0.2s;
-  border-bottom: 2px solid transparent;
-}
-.tab-btn.active {
-  color: var(--gold); border-bottom-color: var(--gold);
-}
-.tab-btn:hover { color: var(--gold2); }
-.tab-content { display: none; }
-.tab-content.active { display: block; }
-
-/* ── TOPBAR ── */
 .topbar {
   display: flex; align-items: center; justify-content: space-between;
   padding: 18px 32px;
@@ -132,431 +94,316 @@ body::before {
   border-bottom: 1px solid var(--border);
   position: sticky; top: 0; z-index: 100;
 }
+
 .topbar-brand { display: flex; align-items: center; gap: 12px; }
 .topbar-logo {
   width: 36px; height: 36px; border-radius: 8px;
   background: linear-gradient(135deg, var(--gold), var(--gold2));
   display: flex; align-items: center; justify-content: center;
-  font-family: 'Playfair Display', serif; font-weight: 700; color: var(--navy); font-size: 16px;
+  font-family: 'Playfair Display', serif; font-weight: 700; color: var(--navy);
 }
-.topbar-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 600; color: var(--text); }
-.topbar-sub { font-size: 11px; color: var(--text3); letter-spacing: 0.05em; }
 
-/* ════════════════════════════════
-   SCREEN 1 — HOME / INPUT
-════════════════════════════════ */
-#screen-home { padding-bottom: 60px; }
+.topbar-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 600; }
+.topbar-sub { font-size: 11px; color: var(--text3); }
+
 .hero {
   text-align: center; padding: 70px 32px 50px;
   background: linear-gradient(180deg, rgba(201,168,76,0.05) 0%, transparent 100%);
   border-bottom: 1px solid var(--border);
 }
-.hero-badge { margin-bottom: 20px; }
+
 .hero h1 {
   font-family: 'Playfair Display', serif;
   font-size: clamp(32px, 5vw, 52px); font-weight: 700;
-  line-height: 1.15; color: var(--text);
   margin-bottom: 16px;
 }
+
 .hero h1 span {
   background: linear-gradient(135deg, var(--gold), var(--gold2), var(--emerald2));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.hero p { font-size: 16px; color: var(--text2); max-width: 520px; margin: 0 auto 36px; line-height: 1.7; }
-.hero-stats {
-  display: flex; justify-content: center; gap: 40px; margin-top: 40px;
-  padding-top: 32px; border-top: 1px solid var(--border);
-}
-.hero-stat { text-align: center; }
-.hero-stat-num { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--gold); }
-.hero-stat-label { font-size: 12px; color: var(--text3); margin-top: 4px; }
+
+.hero p { font-size: 16px; color: var(--text2); max-width: 520px; margin: 0 auto 36px; }
 
 .input-section { max-width: 860px; margin: 0 auto; padding: 48px 24px; }
 .input-section h2 {
-  font-family: 'Playfair Display', serif; font-size: 22px;
-  color: var(--text); margin-bottom: 8px;
+  font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 8px;
 }
+
 .input-section p { font-size: 14px; color: var(--text2); margin-bottom: 24px; }
+
+.tabs-container {
+  display: flex; gap: 12px; border-bottom: 1px solid var(--border);
+  padding: 0 24px; margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  padding: 14px 20px; background: transparent; border: none;
+  font-size: 14px; font-weight: 500; color: var(--text3); cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
 .format-box {
   background: var(--surface2); border: 1px solid var(--border);
   border-radius: var(--radius-sm); padding: 16px 20px; margin-bottom: 20px;
 }
-.format-box h4 { font-size: 12px; font-weight: 500; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
-.format-box code {
-  font-family: 'Courier New', monospace; font-size: 12px;
-  color: var(--text2); line-height: 1.8; display: block;
-}
-.format-box code em { color: var(--emerald2); font-style: normal; }
+
+.format-box h4 { font-size: 12px; color: var(--gold); margin-bottom: 10px; }
+.format-box code { font-family: monospace; font-size: 12px; color: var(--text2); display: block; white-space: pre-wrap; }
+
 .meta-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+
 .meta-row input, .meta-row select {
   background: var(--surface2); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 11px 14px;
-  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; width: 100%;
+  border-radius: var(--radius-sm); padding: 11px 14px; color: var(--text);
+  font-size: 14px; width: 100%;
 }
-.meta-row input::placeholder { color: var(--text3); }
-.meta-row select option { background: var(--navy2); }
+
 .meta-row input:focus, .meta-row select:focus { outline: none; border-color: var(--gold); }
+
 textarea.qa-input {
   width: 100%; min-height: 320px;
   background: var(--surface2); border: 1px solid var(--border);
   border-radius: var(--radius-sm); padding: 16px;
-  color: var(--text); font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.7;
+  color: var(--text); font-family: monospace; font-size: 13px;
   resize: vertical;
 }
-textarea.qa-input::placeholder { color: var(--text3); font-family: 'DM Sans', sans-serif; }
+
 textarea.qa-input:focus { outline: none; border-color: var(--gold); }
+
 .input-actions { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+
 .parse-status {
   padding: 12px 16px; border-radius: var(--radius-sm); font-size: 13px;
   margin-top: 12px; display: none;
 }
-.parse-status.success { background: rgba(26,158,110,0.12); border: 1px solid rgba(26,158,110,0.3); color: var(--emerald2); }
-.parse-status.error { background: rgba(224,92,111,0.12); border: 1px solid rgba(224,92,111,0.3); color: var(--rose2); }
 
-.how-section { max-width: 860px; margin: 0 auto; padding: 0 24px 48px; }
-.how-section h2 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--text); margin-bottom: 24px; }
-.steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
-.step-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 20px;
-}
-.step-num {
-  width: 32px; height: 32px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold), var(--gold2));
-  color: var(--navy); font-size: 13px; font-weight: 700;
-  display: flex; align-items: center; justify-content: center; margin-bottom: 12px;
-}
-.step-card h4 { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
-.step-card p { font-size: 12px; color: var(--text3); line-height: 1.6; }
+.parse-status.success { background: rgba(26,158,110,0.12); color: var(--emerald2); }
+.parse-status.error { background: rgba(224,92,111,0.12); color: var(--rose2); }
 
-/* ════════════════════════════════
-   SCREEN 2 — TEST
-════════════════════════════════ */
-#screen-test { display: none; }
-.test-layout { display: grid; grid-template-columns: 1fr 280px; min-height: 100vh; }
-.test-main { padding: 28px 32px; border-right: 1px solid var(--border); }
-.test-sidebar { padding: 24px 20px; background: var(--surface); position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.prompt-section { max-width: 860px; margin: 0 auto; padding: 48px 24px; }
+.prompt-section h2 {
+  font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 24px;
+}
 
-.timer-bar {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 24px; padding: 14px 20px;
-  background: var(--surface2); border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-}
-.timer-display {
-  font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 600;
-  color: var(--gold); letter-spacing: 2px;
-}
-.timer-display.warning { color: var(--rose2); animation: pulse 1s infinite; }
-.timer-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; }
-.timer-info { text-align: right; }
-.timer-qinfo { font-size: 13px; color: var(--text2); }
-
-.progress-bar-wrap { height: 4px; background: var(--surface3); border-radius: 99px; margin-bottom: 28px; overflow: hidden; }
-.progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--emerald2)); border-radius: 99px; transition: width 0.4s ease; }
-
-.question-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 28px;
-  animation: fadeUp 0.3s ease;
-}
-.case-scenario {
-  background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.3);
-  border-radius: var(--radius-sm); padding: 16px; margin-bottom: 20px;
-}
-.case-scenario-label {
-  font-size: 10px; color: var(--gold); font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;
-}
-.case-scenario-text {
-  font-size: 14px; color: var(--text2); line-height: 1.6;
-}
-.q-number { font-size: 11px; color: var(--gold); font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
-.q-text { font-size: 16px; color: var(--text); line-height: 1.7; margin-bottom: 24px; font-weight: 400; }
-.q-marks { font-size: 12px; color: var(--amber); font-weight: 500; margin-top: -16px; margin-bottom: 16px; }
-.options-grid { display: flex; flex-direction: column; gap: 10px; }
-.option-btn {
-  display: flex; align-items: flex-start; gap: 14px;
-  padding: 14px 18px; border-radius: var(--radius-sm);
+.how-to-box {
   background: var(--surface2); border: 1px solid var(--border);
-  cursor: pointer; transition: all 0.2s; text-align: left; width: 100%;
-  font-family: 'DM Sans', sans-serif;
-}
-.option-btn:hover { border-color: var(--border2); background: var(--surface3); }
-.option-btn.selected { border-color: var(--gold); background: rgba(201,168,76,0.08); }
-.option-btn.correct { border-color: var(--emerald); background: rgba(26,158,110,0.12); }
-.option-btn.wrong { border-color: var(--rose); background: rgba(224,92,111,0.10); }
-.opt-label {
-  width: 28px; height: 28px; flex-shrink: 0; border-radius: 6px;
-  background: var(--surface3); border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 600; color: var(--text2);
-  transition: all 0.2s;
-}
-.option-btn.selected .opt-label { background: var(--gold); color: var(--navy); border-color: var(--gold); }
-.option-btn.correct .opt-label { background: var(--emerald); color: #fff; border-color: var(--emerald); }
-.option-btn.wrong .opt-label { background: var(--rose); color: #fff; border-color: var(--rose); }
-.opt-text { font-size: 14px; color: var(--text); line-height: 1.5; padding-top: 4px; }
-
-.q-nav-btns { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; }
-
-/* Sidebar */
-.sidebar-title { font-size: 11px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; }
-.q-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; margin-bottom: 20px; }
-.q-dot {
-  aspect-ratio: 1; border-radius: 6px;
-  background: var(--surface2); border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; color: var(--text3); cursor: pointer; transition: all 0.15s;
-}
-.q-dot:hover { border-color: var(--border2); }
-.q-dot.current { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.1); }
-.q-dot.answered { background: rgba(26,158,110,0.15); border-color: var(--emerald); color: var(--emerald2); }
-.q-dot.skipped { background: rgba(245,158,11,0.12); border-color: #f59e0b; color: #fbbf24; }
-.sidebar-legend { display: flex; flex-direction: column; gap: 7px; margin-bottom: 20px; }
-.legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text3); }
-.legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
-.sidebar-stats { display: flex; flex-direction: column; gap: 8px; padding-top: 16px; border-top: 1px solid var(--border); }
-.sidebar-stat { display: flex; justify-content: space-between; font-size: 13px; }
-.sidebar-stat span:first-child { color: var(--text3); }
-.sidebar-stat span:last-child { color: var(--text); font-weight: 500; }
-
-/* ════════════════════════════════
-   SCREEN 3 — RESULTS
-════════════════════════════════ */
-#screen-results { display: none; }
-.results-hero {
-  padding: 48px 32px 32px; text-align: center;
-  background: linear-gradient(180deg, rgba(201,168,76,0.07) 0%, transparent 100%);
-  border-bottom: 1px solid var(--border);
-}
-.results-hero h1 { font-family: 'Playfair Display', serif; font-size: 32px; margin-bottom: 8px; }
-.score-ring-wrap { display: flex; justify-content: center; margin: 32px 0; }
-.score-ring-outer {
-  width: 160px; height: 160px; position: relative;
-  display: flex; align-items: center; justify-content: center;
-}
-.score-ring-outer canvas { position: absolute; inset: 0; }
-.score-ring-inner { position: relative; text-align: center; z-index: 1; }
-.score-ring-pct { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; color: var(--gold); }
-.score-ring-label { font-size: 12px; color: var(--text3); margin-top: 2px; }
-.results-meta-cards {
-  display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 20px;
-}
-.rmeta {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 16px 24px; text-align: center; min-width: 120px;
-}
-.rmeta-val { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; }
-.rmeta-lbl { font-size: 11px; color: var(--text3); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
-.green { color: var(--emerald2); }
-.red { color: var(--rose2); }
-.amber { color: #fbbf24; }
-.sky { color: var(--sky2); }
-
-.reports-grid { max-width: 1100px; margin: 0 auto; padding: 40px 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
-.report-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 24px;
-}
-.report-card h3 {
-  font-family: 'Playfair Display', serif; font-size: 17px;
-  color: var(--text); margin-bottom: 6px;
-}
-.report-card p { font-size: 12px; color: var(--text3); margin-bottom: 20px; }
-.report-card canvas { max-height: 220px; }
-
-.time-per-q { display: flex; flex-direction: column; gap: 6px; max-height: 240px; overflow-y: auto; }
-.time-row { display: flex; align-items: center; gap: 10px; }
-.time-q-num { font-size: 11px; color: var(--text3); width: 22px; flex-shrink: 0; }
-.time-bar-track { flex: 1; height: 8px; background: var(--surface3); border-radius: 99px; overflow: hidden; }
-.time-bar-fill { height: 100%; border-radius: 99px; }
-.time-val { font-size: 11px; color: var(--text2); width: 36px; text-align: right; flex-shrink: 0; }
-
-.weak-list { display: flex; flex-direction: column; gap: 10px; }
-.weak-item {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 10px 14px; background: var(--surface2); border-radius: var(--radius-sm);
-}
-.weak-label { font-size: 13px; color: var(--text); }
-.weak-bar-wrap { display: flex; align-items: center; gap: 10px; flex: 1; margin: 0 14px; }
-.weak-bar-track { flex: 1; height: 6px; background: var(--surface3); border-radius: 99px; overflow: hidden; }
-.weak-pct { font-size: 12px; color: var(--text2); width: 34px; text-align: right; }
-
-.results-actions { text-align: center; padding: 32px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-
-/* ════════════════════════════════
-   SCREEN 4 — REVIEW
-════════════════════════════════ */
-#screen-review { display: none; }
-.review-wrap { max-width: 820px; margin: 0 auto; padding: 40px 24px; }
-.review-wrap h2 { font-family: 'Playfair Display', serif; font-size: 26px; margin-bottom: 8px; }
-.review-wrap > p { font-size: 14px; color: var(--text2); margin-bottom: 32px; }
-.review-q {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 24px; margin-bottom: 16px;
-}
-.review-q-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; gap: 14px; }
-.review-q-num { font-size: 11px; color: var(--text3); font-weight: 500; flex-shrink: 0; margin-top: 3px; }
-.review-q-text { font-size: 15px; color: var(--text); line-height: 1.6; }
-.review-options { display: flex; flex-direction: column; gap: 7px; }
-.review-opt {
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px;
-  border: 1px solid transparent;
-}
-.review-opt.correct-ans { background: rgba(26,158,110,0.12); border-color: rgba(26,158,110,0.3); color: var(--emerald2); }
-.review-opt.user-wrong { background: rgba(224,92,111,0.10); border-color: rgba(224,92,111,0.3); color: var(--rose2); }
-.review-opt.neutral { background: var(--surface2); color: var(--text2); }
-.review-opt-label {
-  width: 24px; height: 24px; border-radius: 5px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 600;
-}
-.correct-ans .review-opt-label { background: var(--emerald); color: #fff; }
-.user-wrong .review-opt-label { background: var(--rose); color: #fff; }
-.neutral .review-opt-label { background: var(--surface3); color: var(--text3); }
-.review-time { font-size: 11px; color: var(--text3); margin-top: 10px; }
-.review-back { padding: 24px 24px 0; }
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 99px; }
-
-/* Responsive */
-@media (max-width: 768px) {
-  .test-layout { grid-template-columns: 1fr; }
-  .test-sidebar { display: none; }
-  .hero-stats { gap: 24px; }
-  .meta-row { grid-template-columns: 1fr; }
-  .reports-grid { grid-template-columns: 1fr; }
+  border-radius: var(--radius-sm); padding: 20px; margin-bottom: 24px;
 }
 
-/* ── PROMPTS TAB ── */
+.how-to-box h4 { font-size: 13px; color: var(--gold); font-weight: 600; margin-bottom: 12px; }
+.how-to-box ol { padding-left: 20px; }
+.how-to-box li { font-size: 13px; color: var(--text2); margin-bottom: 8px; line-height: 1.6; }
+.how-to-box li strong { color: var(--text); }
+
 .prompt-card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 28px; margin-bottom: 24px;
+  border-radius: var(--radius); padding: 24px; margin-bottom: 24px;
 }
+
 .prompt-card-header {
   display: flex; justify-content: space-between; align-items: flex-start;
   margin-bottom: 16px; gap: 16px; flex-wrap: wrap;
 }
+
 .prompt-card-title {
   font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; color: var(--text);
 }
+
 .prompt-card-sub { font-size: 12px; color: var(--text3); margin-top: 4px; }
-.prompt-steps {
-  display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;
+
+.prompt-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 14px; border-radius: 99px; font-size: 11px; font-weight: 600;
+  margin-bottom: 8px;
 }
-.prompt-step {
-  display: flex; align-items: center; gap: 7px;
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 99px; padding: 5px 12px; font-size: 12px; color: var(--text2);
-}
-.prompt-step-num {
-  width: 18px; height: 18px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold), var(--gold2));
-  color: var(--navy); font-size: 10px; font-weight: 700;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
+
+.badge-purple { background: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid rgba(168,85,247,0.25); }
+.badge-teal { background: rgba(20,184,166,0.15); color: #2dd4bf; border: 1px solid rgba(20,184,166,0.25); }
+
 .prompt-text-box {
   background: var(--surface2); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 18px;
-  font-family: 'Courier New', monospace; font-size: 12px;
-  color: var(--text2); line-height: 1.85; white-space: pre-wrap;
-  word-break: break-word; max-height: 380px; overflow-y: auto;
-  position: relative; margin-bottom: 14px;
-  transition: border-color 0.2s;
+  border-radius: var(--radius-sm); padding: 16px;
+  font-family: 'Courier New', monospace; font-size: 11px;
+  color: var(--text2); line-height: 1.7; white-space: pre-wrap;
+  word-break: break-word; max-height: 400px; overflow-y: auto;
+  margin-bottom: 14px;
 }
-.prompt-text-box:hover { border-color: var(--border2); }
-.prompt-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+.prompt-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.copy-btn { padding: 10px 20px; font-size: 13px; }
 .copy-feedback {
   font-size: 12px; color: var(--emerald2); opacity: 0;
   transition: opacity 0.3s; font-weight: 500;
 }
 .copy-feedback.show { opacity: 1; }
-.prompt-badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 4px 12px; border-radius: 99px; font-size: 11px; font-weight: 500;
-  margin-bottom: 12px;
+
+.test-layout { display: grid; grid-template-columns: 1fr 280px; min-height: calc(100vh - 70px); }
+.test-main { padding: 28px 32px; border-right: 1px solid var(--border); overflow-y: auto; }
+.test-sidebar { padding: 24px 20px; background: var(--surface); position: sticky; top: 70px; height: calc(100vh - 70px); overflow-y: auto; }
+
+.timer-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px; padding: 14px 20px;
+  background: var(--surface2); border-radius: var(--radius-sm); border: 1px solid var(--border);
 }
-.badge-purple { background: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid rgba(168,85,247,0.25); }
-.badge-teal   { background: rgba(20,184,166,0.15); color: #2dd4bf; border: 1px solid rgba(20,184,166,0.25); }
-.how-to-use-box {
+
+.timer-display {
+  font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 600;
+  color: var(--gold);
+}
+
+.timer-display.warning { color: var(--rose2); animation: pulse 1s infinite; }
+.progress-bar-wrap { height: 4px; background: var(--surface3); border-radius: 99px; margin-bottom: 28px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--emerald2)); transition: width 0.4s ease; }
+
+.question-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px;
+  animation: fadeUp 0.3s ease;
+  min-height: 400px;
+}
+
+.case-scenario {
+  background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.3);
+  border-radius: var(--radius-sm); padding: 16px; margin-bottom: 20px;
+}
+
+.case-scenario-label {
+  font-size: 10px; color: var(--gold); font-weight: 600;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+
+.case-scenario-text { font-size: 14px; color: var(--text2); line-height: 1.6; }
+.q-number { font-size: 11px; color: var(--gold); font-weight: 500; margin-bottom: 10px; }
+.q-text { font-size: 16px; color: var(--text); line-height: 1.7; margin-bottom: 24px; }
+.options-grid { display: flex; flex-direction: column; gap: 10px; }
+
+.option-btn {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 18px; border-radius: var(--radius-sm);
   background: var(--surface2); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 16px 20px; margin-bottom: 24px;
+  cursor: pointer; transition: all 0.2s; width: 100%;
 }
-.how-to-use-box h4 { font-size: 12px; color: var(--gold); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
-.how-to-use-box ol { padding-left: 18px; }
-.how-to-use-box li { font-size: 13px; color: var(--text2); margin-bottom: 6px; line-height: 1.6; }
-.how-to-use-box li strong { color: var(--text); font-weight: 500; }
-.tab-new-badge {
-  display: inline-flex; align-items: center;
-  background: linear-gradient(135deg, rgba(168,85,247,0.25), rgba(20,184,166,0.2));
-  border: 1px solid rgba(168,85,247,0.3); border-radius: 99px;
-  padding: 1px 7px; font-size: 10px; color: #c084fc; margin-left: 5px;
-  vertical-align: middle; font-weight: 600;
+
+.option-btn:hover { border-color: var(--border2); background: var(--surface3); }
+.option-btn.selected { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+
+.opt-label {
+  width: 28px; height: 28px; flex-shrink: 0; border-radius: 6px;
+  background: var(--surface3); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; color: var(--text2);
+}
+
+.option-btn.selected .opt-label { background: var(--gold); color: var(--navy); }
+.opt-text { font-size: 14px; color: var(--text); padding-top: 4px; }
+.q-nav-btns { display: flex; justify-content: space-between; gap: 12px; margin-top: 24px; }
+.sidebar-title { font-size: 11px; font-weight: 500; color: var(--text3); margin-bottom: 14px; }
+.q-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; margin-bottom: 20px; }
+
+.q-dot {
+  aspect-ratio: 1; border-radius: 6px;
+  background: var(--surface2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--text3); cursor: pointer;
+}
+
+.q-dot.current { border-color: var(--gold); background: rgba(201,168,76,0.1); }
+.q-dot.answered { background: rgba(26,158,110,0.15); border-color: var(--emerald); }
+.q-dot.skipped { background: rgba(245,158,11,0.12); border-color: #f59e0b; }
+.sidebar-stats { display: flex; flex-direction: column; gap: 8px; padding-top: 16px; border-top: 1px solid var(--border); }
+.sidebar-stat { display: flex; justify-content: space-between; font-size: 13px; }
+
+.results-hero {
+  padding: 48px 32px; text-align: center;
+  background: linear-gradient(180deg, rgba(201,168,76,0.07) 0%, transparent 100%);
+  border-bottom: 1px solid var(--border);
+}
+
+.results-hero h1 { font-family: 'Playfair Display', serif; font-size: 32px; margin-bottom: 24px; }
+.score-ring-wrap { display: flex; justify-content: center; margin: 24px 0; }
+.score-ring-outer { width: 160px; height: 160px; position: relative; display: flex; align-items: center; justify-content: center; }
+.score-ring-outer canvas { position: absolute; inset: 0; }
+.score-ring-inner { position: relative; text-align: center; z-index: 1; }
+.score-ring-pct { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; color: var(--gold); }
+.results-meta-cards { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 20px; }
+.rmeta { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 24px; text-align: center; }
+.rmeta-val { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; }
+.rmeta-lbl { font-size: 11px; color: var(--text3); margin-top: 4px; }
+.reports-grid { max-width: 1100px; margin: 0 auto; padding: 40px 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.report-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+.report-card h3 { font-family: 'Playfair Display', serif; font-size: 17px; margin-bottom: 6px; }
+.report-card p { font-size: 12px; color: var(--text3); margin-bottom: 20px; }
+.review-wrap { max-width: 820px; margin: 0 auto; padding: 40px 24px; }
+.review-wrap h2 { font-family: 'Playfair Display', serif; font-size: 26px; margin-bottom: 24px; }
+.review-q { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; }
+.review-q-num { font-size: 11px; color: var(--text3); margin-bottom: 8px; }
+.review-q-text { font-size: 15px; color: var(--text); line-height: 1.6; margin-bottom: 16px; }
+.review-options { display: flex; flex-direction: column; gap: 7px; }
+.review-opt { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; }
+.review-opt.correct { background: rgba(26,158,110,0.12); color: var(--emerald2); }
+.review-opt.wrong { background: rgba(224,92,111,0.10); color: var(--rose2); }
+.review-opt.neutral { background: var(--surface2); color: var(--text2); }
+.results-actions { text-align: center; padding: 32px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 99px; }
+
+@media (max-width: 768px) {
+  .test-layout { grid-template-columns: 1fr; }
+  .test-sidebar { display: none; }
+  .meta-row { grid-template-columns: 1fr; }
+  .reports-grid { grid-template-columns: 1fr; }
+  .tabs-container { flex-wrap: wrap; }
 }
 </style>
 </head>
 <body>
-
-<!-- ════ SCREEN 1: HOME ════ -->
 <div id="screen-home" class="screen active">
   <div class="topbar">
     <div class="topbar-brand">
       <div class="topbar-logo">CA</div>
       <div>
-        <div class="topbar-title">CA Final MCQ Tool </div>
-        <div class="topbar-sub">by <a href="https://www.linkedin.com/in/selva-velu-mayil-r-4922aa2a5" target="_blank" style="color:var(--gold);text-decoration:none;font-weight:500;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Selva Velu Mayil R</a></div>
+        <div class="topbar-title">CA Final MCQ Tool</div>
+        <div class="topbar-sub">Assessment &amp; Question Generation Platform</div>
       </div>
-    </div>
-    <div style="display:flex;gap:10px;align-items:center;">
-      <a href="#how" class="btn btn-outline" style="padding:8px 16px;font-size:13px;">How to use</a>
     </div>
   </div>
 
   <div class="hero fade-up">
     <h1>Your Personal<br><span>MCQ Assessment</span><br>Dashboard</h1>
-    <p>Single MCQs (1 mark) & Case-based MCQs (2 marks) — take timed tests with comprehensive performance reports built for CA Final students.</p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+    <p>Single MCQs (1 mark) &amp; Case-based MCQs (2 marks) — take timed tests with detailed performance reports. Plus AI-powered question generation prompts!</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px;">
       <button class="btn btn-gold" onclick="scrollToInput()">📋 Load Questions</button>
-      <button class="btn btn-outline" onclick="loadSampleSingle()">Try Single MCQ Sample</button>
-      <button class="btn btn-outline" onclick="loadSampleCase()">Try Case MCQ Sample</button>
-    </div>
-    <div class="hero-stats">
-      <div class="hero-stat"><div class="hero-stat-num">2</div><div class="hero-stat-label">Question Types</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">∞</div><div class="hero-stat-label">Questions</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">100%</div><div class="hero-stat-label">Free · No Login</div></div>
+      <button class="btn btn-outline" onclick="scrollToPrompts()">🔗 AI Prompts for Generation</button>
     </div>
   </div>
 
   <div class="input-section" id="input-section">
     <h2>Load Your Questions</h2>
-    
+
     <div class="tabs-container">
-      <button class="tab-btn active" onclick="switchTab('single', this)">📝 Single MCQs (1 Mark)</button>
-      <button class="tab-btn" onclick="switchTab('case', this)">📚 Case-based MCQs (2 Marks)</button>
-      <button class="tab-btn" onclick="switchTab('prompts', this)">🔗 NotebookLM Prompts </button>
+      <button class="tab-btn active" onclick="switchTab('single', this)">📝 Single MCQs</button>
+      <button class="tab-btn" onclick="switchTab('case', this)">📚 Case-based MCQs</button>
     </div>
 
-    <!-- SINGLE MCQ TAB -->
     <div id="tab-single" class="tab-content active">
-      <p>Paste individual MCQs. Use the format shown or pipe-separated (|) tabular format.</p>
-      
+      <p>Paste questions in pipe-separated format:</p>
       <div class="format-box">
-        <h4>Accepted Format (Tab or Pipe separated)</h4>
-        <code>
-          <em>Sl.No</em> | Question | Option A | Option B | Option C | Option D | Correct Answer<br>
-          1 | What is the purpose of SA 315? | Risk assessment | Audit planning | Internal control | Materiality | A<br>
-          2 | Under Ind AS 116, a lessee must... | Capitalise all leases | Expense all leases | Use judgement | None | A
-        </code>
+        <h4>Format</h4>
+        <code>Question | Option A | Option B | Option C | Option D | Correct Answer (A/B/C/D)</code>
       </div>
 
       <div class="meta-row">
-        <input type="text" id="test-name-single" placeholder="Test Name (e.g. SFM Mock 1)" value="Single MCQ Test">
+        <input type="text" id="test-name-single" placeholder="Test Name" value="Single MCQ Test">
         <input type="text" id="student-name-single" placeholder="Your Name">
         <select id="time-limit-single">
           <option value="0">No Time Limit</option>
@@ -564,99 +411,77 @@ textarea.qa-input:focus { outline: none; border-color: var(--gold); }
           <option value="45" selected>45 Minutes</option>
           <option value="60">60 Minutes</option>
           <option value="90">90 Minutes</option>
-          <option value="120">120 Minutes</option>
-          <option value="180">3 Hours</option>
         </select>
       </div>
 
-      <textarea class="qa-input" id="qa-input-single" placeholder="Paste your Single MCQ data here...
+      <textarea class="qa-input" id="qa-input-single" placeholder="Paste your questions here...
 Example:
-1 | What does SA 570 deal with? | Going Concern | Related Parties | Internal Controls | Fraud | A
-2 | Under Ind AS 109, financial assets are classified into how many categories? | Two | Three | Four | Five | B
-
-Or click 'Try Single MCQ Sample' above to see a demo instantly."></textarea>
+What does SA 570 deal with? | Going Concern | Related Parties | Internal Controls | Fraud | A
+Under Ind AS 109, how many categories? | Two | Three | Four | Five | B"></textarea>
 
       <div class="input-actions">
-        <button class="btn btn-gold" onclick="parseAndStartSingle()">🚀 Start Single MCQ Test</button>
-        <button class="btn btn-outline" onclick="loadSampleSingle()">Load Sample Questions</button>
-        <button class="btn btn-outline" onclick="clearInput('single')" style="color:var(--text3);">Clear</button>
+        <button class="btn btn-gold" onclick="parseAndStartSingle()">🚀 Start Test</button>
+        <button class="btn btn-outline" onclick="loadSampleSingle()">📖 Load 5 Sample Questions</button>
       </div>
       <div class="parse-status" id="parse-status-single"></div>
     </div>
 
-    <!-- CASE MCQ TAB -->
     <div id="tab-case" class="tab-content">
-      <p>Paste case scenarios with their associated MCQs. Each case will be displayed once, then repeated for each question under it.</p>
-      
+      <p>Paste case scenarios with questions:</p>
       <div class="format-box">
-        <h4>Accepted Format (Tab or Pipe separated)</h4>
-        <code>
-          <em>Case ID</em> | Case Scenario | Sl.No | Question | Option A | Option B | Option C | Option D | Correct Answer<br>
-          CASE-01 | Company XYZ Ltd... [full scenario] | 1 | Question about the case... | Answer A | Answer B | Answer C | Answer D | A<br>
-          CASE-01 | Company XYZ Ltd... [same scenario] | 2 | Another question about case... | Answer A | Answer B | Answer C | Answer D | B<br>
-          CASE-02 | Another scenario... | 1 | New question... | Answer A | Answer B | Answer C | Answer D | C
-        </code>
+        <h4>Format</h4>
+        <code>Case ID | Case Scenario | Question | Option A | Option B | Option C | Option D | Correct Answer
+Repeat the full case scenario in every row for that case.</code>
       </div>
 
       <div class="meta-row">
-        <input type="text" id="test-name-case" placeholder="Test Name (e.g. Case Study Mock 1)" value="Case-based MCQ Test">
+        <input type="text" id="test-name-case" placeholder="Test Name" value="Case MCQ Test">
         <input type="text" id="student-name-case" placeholder="Your Name">
         <select id="time-limit-case">
           <option value="0">No Time Limit</option>
-          <option value="30">30 Minutes</option>
           <option value="45">45 Minutes</option>
           <option value="60" selected>60 Minutes</option>
           <option value="90">90 Minutes</option>
-          <option value="120">120 Minutes</option>
-          <option value="180">3 Hours</option>
         </select>
       </div>
 
-      <textarea class="qa-input" id="qa-input-case" placeholder="Paste your Case-based MCQ data here...
+      <textarea class="qa-input" id="qa-input-case" placeholder="Paste case-based questions here...
 Example:
-CASE-01 | ABC Ltd, a manufacturing company, changed its depreciation method from FYP to WDV... | 1 | Under which AS is change in accounting policy covered? | AS 3 | AS 5 | AS 36 | AS 8 | B
-CASE-01 | ABC Ltd, a manufacturing company, changed its depreciation method from FYP to WDV... | 2 | The CFO's classification of the change is an example of... | Error | Change in policy | Change in estimate | Prospective change | C
-
-Or click 'Try Case MCQ Sample' above to see a demo instantly."></textarea>
+CASE-01 | ABC Ltd changed depreciation method | Which AS covers this? | AS 2 | AS 8 | AS 16 | AS 20 | B"></textarea>
 
       <div class="input-actions">
-        <button class="btn btn-gold" onclick="parseAndStartCase()">🚀 Start Case MCQ Test</button>
-        <button class="btn btn-outline" onclick="loadSampleCase()">Load Sample Questions</button>
-        <button class="btn btn-outline" onclick="clearInput('case')" style="color:var(--text3);">Clear</button>
+        <button class="btn btn-gold" onclick="parseAndStartCase()">🚀 Start Test</button>
+        <button class="btn btn-outline" onclick="loadSampleCase()">📖 Load 5 Sample Questions</button>
       </div>
       <div class="parse-status" id="parse-status-case"></div>
     </div>
+  </div>
 
-    <!-- ══ NOTEBOOKLM PROMPTS TAB ══ -->
-    <div id="tab-prompts" class="tab-content">
+  <div class="prompt-section" id="prompts-section">
+    <h2>📌 AI Prompts for Question Generation (NotebookLM)</h2>
 
-      <div class="how-to-use-box">
-        <h4>How to use these prompts with NotebookLM</h4>
-        <ol>
-          <li><strong>Open NotebookLM</strong> and upload your chapter or study material as a source.</li>
-          <li><strong>Copy the prompt</strong> below (Single MCQ or Case-based) using the Copy button.</li>
-          <li><strong>Paste it into the NotebookLM chat</strong> and press Enter.</li>
-          <li><strong>Copy the output table</strong> that NotebookLM generates.</li>
-          <li>Come back here → go to the <strong>Single MCQ or Case-based tab</strong> → paste → Start Test.</li>
-        </ol>
+    <div class="how-to-box">
+      <h4>🎯 How to Use These Prompts</h4>
+      <ol>
+        <li><strong>Open NotebookLM</strong> and upload your study material or MCQ booklet chapter as a source.</li>
+        <li><strong>Copy the prompt</strong> below (Single MCQ or Case-based) using the “📋 Copy Prompt” button.</li>
+        <li><strong>Paste it into the NotebookLM chat</strong> and press Enter.</li>
+        <li><strong>NotebookLM will generate questions</strong> in the exact format required.</li>
+        <li><strong>Copy the output table</strong> from NotebookLM.</li>
+        <li><strong>Return here</strong> → switch to the appropriate tab → paste the questions → click “Start Test”.</li>
+      </ol>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div>
+          <span class="prompt-badge badge-purple">📝 Single MCQs · 1 Mark Each</span>
+          <div class="prompt-card-title">Standard MCQ Prompt</div>
+          <div class="prompt-card-sub">For extracting from MCQ booklets or generating from chapter notes</div>
+        </div>
       </div>
 
-      <!-- PROMPT 1: SINGLE MCQ -->
-      <div class="prompt-card">
-        <div class="prompt-card-header">
-          <div>
-            <span class="prompt-badge badge-purple">📝 Single MCQs · 1 Mark Each</span>
-            <div class="prompt-card-title">Standard MCQ Prompt</div>
-            <div class="prompt-card-sub">For extracting from MCQ booklets or generating from chapter notes</div>
-          </div>
-        </div>
-        <div class="prompt-steps">
-          <div class="prompt-step"><div class="prompt-step-num">1</div>Upload chapter to NotebookLM</div>
-          <div class="prompt-step"><div class="prompt-step-num">2</div>Copy this prompt</div>
-          <div class="prompt-step"><div class="prompt-step-num">3</div>Paste in NotebookLM chat</div>
-          <div class="prompt-step"><div class="prompt-step-num">4</div>Copy output → paste in Single MCQ tab</div>
-        </div>
-        <div class="prompt-text-box" id="prompt-single">You are a CA Final exam paper setter working under ICAI standards. I am uploading [study material / an MCQ booklet chapter]. Your task is:
+      <div class="prompt-text-box" id="prompt-single">You are a CA Final exam paper setter working under ICAI standards. I am uploading [study material / an MCQ booklet chapter]. Your task is:
 ► If it is an MCQ booklet → EXTRACT all MCQs exactly as-is, correcting any formatting errors, and output them in the required format below.
 ► If it is study material → GENERATE original MCQs from the content.
 
@@ -677,15 +502,15 @@ Before writing a single question, privately assign a random answer position sequ
 - Each letter appears approximately 25% of the time across the full set
 - There is no pattern: no cycling (A,B,C,D,A,B...), no pairing, no front-loading
 - The correct option MUST land at the pre-assigned position — BUILD the question around the position, not the other way around
-- Never let the "naturally correct" position override the shuffled assignment
+- Never let the naturally correct position override the shuffled assignment
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 OUTPUT FORMAT — STRICT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Output ONLY a plain pipe-separated table. Nothing else — no headings, no explanations, no blank rows, no serial number inside the question text.
+Output ONLY a plain pipe-separated table. Nothing else — no headings, no explanations, no blank rows, no serial number.
 
-EXACT COLUMN ORDER (7 columns, pipe-separated):
-Sl.No | Question | Option A | Option B | Option C | Option D | Correct Answer
+EXACT COLUMN ORDER (6 columns, pipe-separated):
+Question | Option A | Option B | Option C | Option D | Correct Answer
 
 RULES:
 - One row = one question
@@ -695,40 +520,35 @@ RULES:
 - No trailing pipes, no merged cells
 
 EXAMPLE OUTPUT:
-1 | Under Ind AS 12, deferred tax is recognised using which method? | Income statement approach | Balance sheet approach | Combined approach | Cash basis approach | B
-2 | Which SA deals with the auditor's responsibility regarding fraud? | SA 240 | SA 250 | SA 265 | SA 315 | A
-3 | A change in useful life of an asset under Ind AS 16 is treated as? | Change in accounting policy | Prior period error | Change in accounting estimate | Retrospective restatement | C
+Under Ind AS 12, deferred tax is recognised using which method? | Income statement approach | Balance sheet approach | Combined approach | Cash basis approach | B
+Which SA deals with the auditor’s responsibility regarding fraud? | SA 240 | SA 250 | SA 265 | SA 315 | A
+A change in useful life of an asset under Ind AS 16 is treated as? | Change in accounting policy | Prior period error | Change in accounting estimate | Retrospective restatement | C
 
 Apply the above prompt to the uploaded source and give me 50 MCQs.</div>
-        <div class="prompt-actions">
-          <button class="btn btn-gold" style="padding:10px 20px;font-size:13px;" onclick="copyPrompt('single', this)">📋 Copy This Prompt</button>
-          <span class="copy-feedback" id="copy-feedback-single">✓ Copied to clipboard!</span>
+
+      <div class="prompt-actions">
+        <button class="btn btn-gold copy-btn" onclick="copyPromptToClipboard('single', this)">📋 Copy Prompt</button>
+        <span class="copy-feedback" id="feedback-single">✓ Copied to clipboard!</span>
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div>
+          <span class="prompt-badge badge-teal">📚 Case-based MCQs · 2 Marks Each</span>
+          <div class="prompt-card-title">Case-Based MCQ Prompt</div>
+          <div class="prompt-card-sub">For generating scenario-based questions from study material</div>
         </div>
       </div>
 
-      <!-- PROMPT 2: CASE-BASED MCQ -->
-      <div class="prompt-card">
-        <div class="prompt-card-header">
-          <div>
-            <span class="prompt-badge badge-teal">📚 Case-based MCQs · 2 Marks Each</span>
-            <div class="prompt-card-title">Case-Based MCQ Prompt</div>
-            <div class="prompt-card-sub">For generating scenario-based questions from study material</div>
-          </div>
-        </div>
-        <div class="prompt-steps">
-          <div class="prompt-step"><div class="prompt-step-num">1</div>Upload chapter to NotebookLM</div>
-          <div class="prompt-step"><div class="prompt-step-num">2</div>Copy this prompt</div>
-          <div class="prompt-step"><div class="prompt-step-num">3</div>Paste in NotebookLM chat</div>
-          <div class="prompt-step"><div class="prompt-step-num">4</div>Copy output → paste in Case MCQ tab</div>
-        </div>
-        <div class="prompt-text-box" id="prompt-case">You are a CA Final exam paper setter specialising in case-based MCQs under ICAI standards. I am uploading study material. GENERATE high-quality case-based MCQs.
+      <div class="prompt-text-box" id="prompt-case">You are a CA Final exam paper setter specialising in case-based MCQs under ICAI standards. I am uploading study material. GENERATE high-quality case-based MCQs.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 CASE SCENARIO QUALITY STANDARDS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 - Each case must read like a real professional scenario — a company, entity, or fact pattern with specific named figures, dates, amounts, and context
 - Scenarios must be rich enough that multiple concepts or computations can be tested from a single case
-- Avoid generic, textbook-sounding scenarios ("Company A did XYZ...") — use realistic industry-specific details
+- Avoid generic, textbook-sounding scenarios (Company A did XYZ) — use realistic industry-specific details
 - CA Final level only — questions must require application, analysis, or judgment, not recall
 - Language: ICAI Final exam style — formal, precise, no ambiguity
 - Each individual MCQ must be answerable using the case scenario alone
@@ -753,226 +573,158 @@ OUTPUT FORMAT — STRICT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Output ONLY a plain pipe-separated table. Nothing else — no headings, no explanations, no blank rows.
 
-EXACT COLUMN ORDER (9 columns, pipe-separated):
-Case ID | Case Scenario | Sl.No | Question | Option A | Option B | Option C | Option D | Correct Answer
+EXACT COLUMN ORDER (8 columns, pipe-separated):
+Case ID | Case Scenario | Question | Option A | Option B | Option C | Option D | Correct Answer
 
 RULES:
-- Case Scenario: full paragraph text in FIRST row of that case only; leave the cell EMPTY (just the pipe |) for all subsequent rows of the same case
+- Repeat the FULL case scenario in EVERY row belonging to that case
+- Do not leave the case scenario blank for subsequent rows of the same case
 - Case ID: repeat same ID (e.g. CASE-01) for every row belonging to that case
-- Sl.No: continuous numbering across all cases (1, 2, 3... not restarting per case)
-- One row = one MCQ | No blank rows | No merged cells
+- One row = one MCQ
+- No blank rows and no merged cells
 - Plain text only — no bold, asterisks, or markdown
 - Correct Answer: only the letter A, B, C, or D
 
 EXAMPLE OUTPUT:
-CASE-01 | Prestige Textiles Ltd., a listed manufacturing company, changed its inventory valuation method from FIFO to Weighted Average Cost with effect from 1 April 2024 without obtaining Board approval. The CFO has proposed that the change be applied prospectively to avoid restating comparative figures. The auditors have flagged this in their review notes. The company's profit before tax for FY2024 would have been Rs.12 crore lower under the old method. | 1 | Which Ind AS governs a change in accounting policy? | Ind AS 2 | Ind AS 8 | Ind AS 10 | Ind AS 16 | B
-CASE-01 | | 2 | What is the correct treatment for this change in accounting policy? | Apply prospectively as proposed | Apply retrospectively with restatement of comparatives | Disclose in notes only, no restatement required | Treat as a prior period error and adjust opening reserves | B
-CASE-02 | Metro Infrastructure Pvt. Ltd. entered into a lease for office space on 1 April 2024 for a period of 6 years at a monthly rent of Rs.4,00,000. The company's incremental borrowing rate is 9% p.a. The lease contains no purchase option but grants the lessee the right to use the asset for the full term. | 3 | Under Ind AS 116, how should Metro Infrastructure classify this lease? | Operating lease, expense monthly | Recognise right-of-use asset and lease liability | Short-term lease exemption applies | Low-value asset exemption applies | B
+CASE-01 | Prestige Textiles Ltd., a listed manufacturing company, changed its inventory valuation method from FIFO to Weighted Average Cost with effect from 1 April 2024 without obtaining Board approval. The CFO has proposed that the change be applied prospectively to avoid restating comparative figures. The auditors have flagged this in their review notes. The company’s profit before tax for FY2024 would have been Rs.12 crore lower under the old method. | Which Ind AS governs a change in accounting policy? | Ind AS 2 | Ind AS 8 | Ind AS 10 | Ind AS 16 | B
+CASE-01 | Prestige Textiles Ltd., a listed manufacturing company, changed its inventory valuation method from FIFO to Weighted Average Cost with effect from 1 April 2024 without obtaining Board approval. The CFO has proposed that the change be applied prospectively to avoid restating comparative figures. The auditors have flagged this in their review notes. The company’s profit before tax for FY2024 would have been Rs.12 crore lower under the old method. | What is the correct treatment for this change in accounting policy? | Apply prospectively as proposed | Apply retrospectively with restatement of comparatives | Disclose in notes only, no restatement required | Treat as a prior period error and adjust opening reserves | B
+CASE-02 | Metro Infrastructure Pvt. Ltd. entered into a lease for office space on 1 April 2024 for a period of 6 years at a monthly rent of Rs.4,00,000. The company’s incremental borrowing rate is 9% p.a. The lease contains no purchase option but grants the lessee the right to use the asset for the full term. | Under Ind AS 116, how should Metro Infrastructure classify this lease? | Operating lease, expense monthly | Finance lease on balance sheet | Short-term lease exemption applies | Low-value asset exemption applies | B
 
 Apply the above prompt to the uploaded source and give me 50 case-based MCQs.</div>
-        <div class="prompt-actions">
-          <button class="btn btn-gold" style="padding:10px 20px;font-size:13px;" onclick="copyPrompt('case', this)">📋 Copy This Prompt</button>
-          <span class="copy-feedback" id="copy-feedback-case">✓ Copied to clipboard!</span>
-        </div>
-      </div>
 
-    </div><!-- end tab-prompts -->
-
-  <div class="how-section" id="how">
-    <h2>How It Works</h2>
-    <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-num">1</div>
-        <h4>Choose Test Type</h4>
-        <p>Select between Single MCQs (1 mark each) or Case-based MCQs (2 marks each).</p>
-      </div>
-      <div class="step-card">
-        <div class="step-num">2</div>
-        <h4>Paste & Configure</h4>
-        <p>Paste the questions above, set your name, test name, and choose a time limit.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-num">3</div>
-        <h4>Attempt the Test</h4>
-        <p>Navigate questions freely, view case scenarios, track your timer, and submit when ready.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-num">4</div>
-        <h4>View Full Reports</h4>
-        <p>Get detailed reports — score, time analysis, weak areas, topic breakdown and more.</p>
+      <div class="prompt-actions">
+        <button class="btn btn-gold copy-btn" onclick="copyPromptToClipboard('case', this)">📋 Copy Prompt</button>
+        <span class="copy-feedback" id="feedback-case">✓ Copied to clipboard!</span>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ════ SCREEN 2: TEST ════ -->
 <div id="screen-test" class="screen">
   <div class="topbar">
     <div class="topbar-brand">
       <div class="topbar-logo">CA</div>
       <div>
-        <div class="topbar-title" id="test-title-bar">CA Final Mock Test</div>
+        <div class="topbar-title" id="test-title-bar">Test</div>
         <div class="topbar-sub" id="student-name-bar">Student</div>
       </div>
     </div>
-    <div style="display:flex;gap:10px;">
-      <button class="btn btn-outline" onclick="confirmSubmit()" style="padding:9px 18px;font-size:13px;">Submit Test</button>
-    </div>
+    <button class="btn btn-outline" onclick="confirmSubmit()" style="padding:9px 18px;font-size:13px;">Submit</button>
   </div>
 
   <div class="test-layout">
     <div class="test-main">
       <div class="timer-bar">
         <div>
-          <div class="timer-label">Time Remaining</div>
+          <div style="font-size:11px;color:var(--text3);">Time Remaining</div>
           <div class="timer-display" id="timer-display">45:00</div>
         </div>
-        <div class="timer-info">
-          <div class="timer-qinfo" id="timer-qinfo">Question 1 of 0</div>
+        <div style="text-align:right;">
+          <div style="font-size:13px;color:var(--text2);" id="timer-qinfo">Q 1 of 0</div>
           <div style="font-size:12px;color:var(--text3);margin-top:4px;" id="timer-attempted">0 answered</div>
         </div>
       </div>
-      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-bar" style="width:0%"></div></div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-bar"></div></div>
       <div class="question-card" id="question-area"></div>
       <div class="q-nav-btns">
         <button class="btn btn-outline" id="btn-prev" onclick="prevQ()">← Previous</button>
         <div style="display:flex;gap:10px;">
-          <button class="btn btn-outline" onclick="skipQ()" id="btn-skip">Skip →</button>
-          <button class="btn btn-emerald" onclick="nextQ()" id="btn-next">Next →</button>
+          <button class="btn btn-outline" id="btn-skip" onclick="skipQ()">Skip →</button>
+          <button class="btn btn-emerald" id="btn-next" onclick="nextQ()">Next →</button>
         </div>
       </div>
     </div>
+
     <div class="test-sidebar">
-      <div class="sidebar-title">Question Navigator</div>
+      <div class="sidebar-title">Questions</div>
       <div class="q-grid" id="q-grid"></div>
-      <div class="sidebar-legend">
-        <div class="legend-item"><div class="legend-dot" style="background:rgba(26,158,110,0.4);border:1px solid var(--emerald)"></div>Answered</div>
-        <div class="legend-item"><div class="legend-dot" style="background:rgba(245,158,11,0.3);border:1px solid #f59e0b"></div>Skipped</div>
-        <div class="legend-item"><div class="legend-dot" style="background:rgba(201,168,76,0.2);border:1px solid var(--gold)"></div>Current</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--surface2);border:1px solid var(--border)"></div>Not visited</div>
-      </div>
-      <div class="sidebar-stats">
-        <div class="sidebar-stat"><span>Answered</span><span class="green" id="sb-answered">0</span></div>
-        <div class="sidebar-stat"><span>Skipped</span><span class="amber" id="sb-skipped">0</span></div>
+      <div class="sidebar-stats" style="margin-top:20px;">
+        <div class="sidebar-stat"><span>Answered</span><span id="sb-answered" style="color:var(--emerald2);">0</span></div>
+        <div class="sidebar-stat"><span>Skipped</span><span style="color:#fbbf24;" id="sb-skipped">0</span></div>
         <div class="sidebar-stat"><span>Remaining</span><span id="sb-remaining">0</span></div>
-        <div class="sidebar-stat"><span>Total Marks</span><span id="sb-total-marks">0</span></div>
       </div>
-      <button class="btn btn-rose" style="width:100%;margin-top:20px;justify-content:center;" onclick="confirmSubmit()">Submit Test</button>
+      <button class="btn btn-rose" style="width:100%;margin-top:20px;justify-content:center;" onclick="confirmSubmit()">Submit</button>
     </div>
   </div>
 </div>
 
-<!-- ════ SCREEN 3: RESULTS ════ -->
 <div id="screen-results" class="screen">
   <div class="topbar">
     <div class="topbar-brand">
       <div class="topbar-logo">CA</div>
       <div>
-        <div class="topbar-title">Test Results</div>
-        <div class="topbar-sub" id="results-subtitle">CA Final Mock Test</div>
+        <div class="topbar-title">Results</div>
+        <div class="topbar-sub" id="results-subtitle">Test</div>
       </div>
     </div>
-    <div style="display:flex;gap:10px;">
-      <button class="btn btn-outline" onclick="showScreen('screen-review')" style="font-size:13px;padding:9px 18px;">Review Answers</button>
-    </div>
+    <button class="btn btn-outline" onclick="showScreen('screen-review')" style="font-size:13px;padding:9px 18px;">Review</button>
   </div>
 
   <div class="results-hero">
-    <h1 id="results-grade-msg">Outstanding Performance!</h1>
+    <h1 id="results-grade-msg">Great Job!</h1>
     <div class="score-ring-wrap">
       <div class="score-ring-outer">
         <canvas id="score-ring-chart" width="160" height="160"></canvas>
         <div class="score-ring-inner">
           <div class="score-ring-pct" id="score-pct">0%</div>
-          <div class="score-ring-label">Score</div>
+          <div style="font-size:12px;color:var(--text3);">Score</div>
         </div>
       </div>
     </div>
     <div class="results-meta-cards">
-      <div class="rmeta"><div class="rmeta-val green" id="r-correct">0</div><div class="rmeta-lbl">Correct</div></div>
-      <div class="rmeta"><div class="rmeta-val red" id="r-wrong">0</div><div class="rmeta-lbl">Wrong</div></div>
-      <div class="rmeta"><div class="rmeta-val amber" id="r-skipped">0</div><div class="rmeta-lbl">Skipped</div></div>
-      <div class="rmeta"><div class="rmeta-val sky" id="r-time">0:00</div><div class="rmeta-lbl">Time Taken</div></div>
-      <div class="rmeta"><div class="rmeta-val" id="r-accuracy" style="color:var(--gold)">0%</div><div class="rmeta-lbl">Accuracy</div></div>
-      <div class="rmeta"><div class="rmeta-val" id="r-marks" style="color:var(--gold2)">0 / 0</div><div class="rmeta-lbl">Marks Obtained</div></div>
+      <div class="rmeta"><div class="rmeta-val" style="color:var(--emerald2);" id="r-correct">0</div><div class="rmeta-lbl">Correct</div></div>
+      <div class="rmeta"><div class="rmeta-val" style="color:var(--rose2);" id="r-wrong">0</div><div class="rmeta-lbl">Wrong</div></div>
+      <div class="rmeta"><div class="rmeta-val" style="color:#fbbf24;" id="r-skipped">0</div><div class="rmeta-lbl">Skipped</div></div>
+      <div class="rmeta"><div class="rmeta-val" style="color:var(--sky2);" id="r-time">0:00</div><div class="rmeta-lbl">Time</div></div>
+      <div class="rmeta"><div class="rmeta-val" style="color:var(--gold);" id="r-accuracy">0%</div><div class="rmeta-lbl">Accuracy</div></div>
     </div>
   </div>
 
   <div class="reports-grid">
-    <!-- Report 1: Score Donut -->
     <div class="report-card">
       <h3>Score Breakdown</h3>
-      <p>Distribution of correct, wrong, and skipped answers</p>
-      <canvas id="chart-breakdown"></canvas>
+      <p>Distribution of answers</p>
+      <canvas id="chart-breakdown" style="max-height:250px;"></canvas>
     </div>
 
-    <!-- Report 2: Time per question -->
+    <div class="report-card">
+      <h3>Performance by Question</h3>
+      <p>Question-wise results</p>
+      <canvas id="chart-qwise" style="max-height:250px;"></canvas>
+    </div>
+
     <div class="report-card">
       <h3>Time per Question</h3>
-      <p>Seconds spent on each question — highlights where you struggled</p>
-      <div class="time-per-q" id="time-per-q"></div>
-    </div>
-
-    <!-- Report 3: Performance bar chart -->
-    <div class="report-card">
-      <h3>Question-wise Performance</h3>
-      <p>Visual map of correct, wrong, and skipped across all questions</p>
-      <canvas id="chart-qwise"></canvas>
-    </div>
-
-    <!-- Report 4: Speed analysis -->
-    <div class="report-card">
-      <h3>Speed vs Accuracy</h3>
-      <p>How your time investment correlated with correctness</p>
-      <canvas id="chart-speed"></canvas>
-    </div>
-
-    <!-- Report 5: Weak areas -->
-    <div class="report-card" style="grid-column: span 1;">
-      <h3>Weak Area Identification</h3>
-      <p>Questions you got wrong — ranked by time spent (most time = most difficulty)</p>
-      <div class="weak-list" id="weak-list"></div>
-    </div>
-
-    <!-- Report 6: Grade card -->
-    <div class="report-card">
-      <h3>Performance Grade Card</h3>
-      <p>Your performance across key exam metrics</p>
-      <canvas id="chart-radar"></canvas>
+      <p>Seconds spent on each question</p>
+      <div id="time-per-q" style="max-height:250px;overflow-y:auto;"></div>
     </div>
   </div>
 
   <div class="results-actions">
-    <button class="btn btn-gold" onclick="showScreen('screen-review')">📖 Review All Answers</button>
-    <button class="btn btn-outline" onclick="retakeTest()">🔄 Retake Test</button>
-    <button class="btn btn-outline" onclick="showScreen('screen-home')">🏠 Load New Test</button>
-    <button class="btn btn-emerald" onclick="printReport()">🖨 Print Report</button>
+    <button class="btn btn-gold" onclick="showScreen('screen-review')">📖 Review Answers</button>
+    <button class="btn btn-outline" onclick="retakeTest()">🔄 Retake</button>
+    <button class="btn btn-outline" onclick="showScreen('screen-home')">🏠 Home</button>
   </div>
 </div>
 
-<!-- ════ SCREEN 4: REVIEW ════ -->
 <div id="screen-review" class="screen">
   <div class="topbar">
     <div class="topbar-brand">
       <div class="topbar-logo">CA</div>
       <div>
         <div class="topbar-title">Answer Review</div>
-        <div class="topbar-sub">Detailed question-by-question analysis</div>
+        <div class="topbar-sub">Detailed analysis</div>
       </div>
     </div>
-    <button class="btn btn-outline" onclick="showScreen('screen-results')" style="font-size:13px;padding:9px 18px;">← Back to Results</button>
+    <button class="btn btn-outline" onclick="showScreen('screen-results')" style="font-size:13px;padding:9px 18px;">← Back</button>
   </div>
   <div class="review-wrap">
-    <h2>Answer Review</h2>
-    <p>Each question with your answer, the correct answer, and time spent highlighted.</p>
+    <h2>Your Answers</h2>
     <div id="review-list"></div>
   </div>
 </div>
 
 <script>
-// ══════════════════════════════════════════
-//  STATE
-// ══════════════════════════════════════════
 let questions = [];
 let userAnswers = [];
 let questionTimes = [];
@@ -984,14 +736,19 @@ let timeElapsed = 0;
 let qStartTime = 0;
 let testStartTime = 0;
 let charts = {};
-let questionMarks = [];
 let testType = 'single';
 
-const OPTS = ['A','B','C','D'];
+const OPTS = ['A', 'B', 'C', 'D'];
 
-// ══════════════════════════════════════════
-//  TAB MANAGEMENT
-// ══════════════════════════════════════════
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function switchTab(tab, el) {
   document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(e => e.classList.remove('active'));
@@ -999,22 +756,34 @@ function switchTab(tab, el) {
   if (el) el.classList.add('active');
 }
 
-// ══════════════════════════════════════════
-//  COPY PROMPT
-// ══════════════════════════════════════════
-function copyPrompt(type, btn) {
-  const el = document.getElementById('prompt-' + type);
-  const text = el.innerText;
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function scrollToInput() {
+  document.getElementById('input-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+function scrollToPrompts() {
+  document.getElementById('prompts-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+function copyPromptToClipboard(type, btn) {
+  const promptEl = document.getElementById('prompt-' + type);
+  const text = promptEl.innerText;
+
   navigator.clipboard.writeText(text).then(() => {
-    const fb = document.getElementById('copy-feedback-' + type);
-    fb.classList.add('show');
+    const feedback = document.getElementById('feedback-' + type);
+    feedback.classList.add('show');
     btn.textContent = '✅ Copied!';
+
     setTimeout(() => {
-      fb.classList.remove('show');
-      btn.textContent = '📋 Copy This Prompt';
+      feedback.classList.remove('show');
+      btn.textContent = '📋 Copy Prompt';
     }, 2500);
   }).catch(() => {
-    // Fallback for older browsers
     const ta = document.createElement('textarea');
     ta.value = text;
     ta.style.position = 'fixed';
@@ -1023,82 +792,77 @@ function copyPrompt(type, btn) {
     ta.select();
     document.execCommand('copy');
     document.body.removeChild(ta);
-    const fb = document.getElementById('copy-feedback-' + type);
-    fb.classList.add('show');
+
+    const feedback = document.getElementById('feedback-' + type);
+    feedback.classList.add('show');
     btn.textContent = '✅ Copied!';
+
     setTimeout(() => {
-      fb.classList.remove('show');
-      btn.textContent = '📋 Copy This Prompt';
+      feedback.classList.remove('show');
+      btn.textContent = '📋 Copy Prompt';
     }, 2500);
   });
 }
 
-// ══════════════════════════════════════════
-//  SCREEN MANAGEMENT
-// ══════════════════════════════════════════
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => { s.style.display = 'none'; s.classList.remove('active'); });
-  const el = document.getElementById(id);
-  el.style.display = 'block';
-  el.classList.add('active');
-  window.scrollTo(0,0);
-}
-function scrollToInput() {
-  document.getElementById('input-section').scrollIntoView({ behavior: 'smooth' });
-}
-
-// ══════════════════════════════════════════
-//  PARSING — SINGLE MCQs
-// ══════════════════════════════════════════
 function parseInputSingle(raw) {
-  const lines = raw.trim().split('\n').filter(l => l.trim());
+  const lines = raw.trim().split('\n').map(l => l.trim()).filter(Boolean);
   const qs = [];
-  for (let line of lines) {
-    line = line.trim();
-    if (!line) continue;
-    let parts = line.includes('\t') ? line.split('\t') : line.split('|');
-    parts = parts.map(p => p.trim());
-    if (parts.length < 6) continue;
-    let offset = 0;
-    if (parts.length >= 7 && !isNaN(parseInt(parts[0]))) offset = 1;
-    const question = parts[offset];
-    const optA = parts[offset+1];
-    const optB = parts[offset+2];
-    const optC = parts[offset+3];
-    const optD = parts[offset+4];
-    const ans = parts[offset+5] ? parts[offset+5].toUpperCase().trim() : '';
-    if (!question || !optA || !optB || !optC || !optD) continue;
-    if (!['A','B','C','D'].includes(ans)) continue;
-    qs.push({ question, options: [optA, optB, optC, optD], correct: ans, marks: 1, caseId: null, caseText: null });
+
+  for (const line of lines) {
+    const parts = (line.includes('\t') ? line.split('\t') : line.split('|')).map(p => p.trim());
+
+    if (parts.length === 6) {
+      const [question, optA, optB, optC, optD, ansRaw] = parts;
+      const ans = ansRaw.toUpperCase();
+      if (!question || !optA || !optB || !optC || !optD) continue;
+      if (!OPTS.includes(ans)) continue;
+      qs.push({ question, options: [optA, optB, optC, optD], correct: ans, marks: 1, caseId: null, caseText: null });
+    } else if (parts.length >= 7) {
+      const serialMaybe = parts[0];
+      const question = parts[1];
+      const optA = parts[2];
+      const optB = parts[3];
+      const optC = parts[4];
+      const optD = parts[5];
+      const ans = (parts[6] || '').toUpperCase();
+      if (!question || !optA || !optB || !optC || !optD) continue;
+      if (!OPTS.includes(ans)) continue;
+      qs.push({ question, options: [optA, optB, optC, optD], correct: ans, marks: 1, caseId: null, caseText: null, serial: serialMaybe });
+    }
   }
+
   return qs;
 }
 
-// ══════════════════════════════════════════
-//  PARSING — CASE MCQs
-// ══════════════════════════════════════════
 function parseInputCase(raw) {
-  const lines = raw.trim().split('\n').filter(l => l.trim());
   const qs = [];
-  const caseScenarioMap = {};
-  for (let line of lines) {
-    line = line.trim();
-    if (!line) continue;
-    let parts = line.includes('\t') ? line.split('\t') : line.split('|');
-    parts = parts.map(p => p.trim());
-    if (parts.length < 8) continue;
-    const caseId = parts[0];
-    let caseText = parts[1];
-    const question = parts[3];
-    const optA = parts[4], optB = parts[5], optC = parts[6], optD = parts[7];
-    const ans = parts[8] ? parts[8].toUpperCase().trim() : '';
-    if (!caseId || !question || !optA || !optB || !optC || !optD) continue;
-    if (!['A','B','C','D'].includes(ans)) continue;
-    if (caseText) { caseScenarioMap[caseId] = caseText; }
-    else { caseText = caseScenarioMap[caseId] || ''; }
-    if (!caseText) continue;
-    qs.push({ question, options: [optA, optB, optC, optD], correct: ans, marks: 2, caseId, caseText });
+  const lines = raw.trim().split('\n').map(l => l.trim()).filter(Boolean);
+
+  for (const line of lines) {
+    if (!line.includes('|')) continue;
+    const parts = line.split('|').map(p => p.trim());
+
+    if (parts.length === 8) {
+      const [caseId, caseText, question, optA, optB, optC, optD, ansRaw] = parts;
+      const ans = ansRaw.toUpperCase();
+      if (!caseId || !caseText || !question || !optA || !optB || !optC || !optD) continue;
+      if (!OPTS.includes(ans)) continue;
+      qs.push({ question, options: [optA, optB, optC, optD], correct: ans, marks: 2, caseId, caseText });
+    } else if (parts.length >= 9) {
+      const caseId = parts[0];
+      const caseText = parts[1];
+      const question = parts[3];
+      const optA = parts[4];
+      const optB = parts[5];
+      const optC = parts[6];
+      const optD = parts[7];
+      const ans = (parts[8] || '').toUpperCase();
+      if (!caseId || !caseText || !question || !optA || !optB || !optC || !optD) continue;
+      if (!OPTS.includes(ans)) continue;
+      qs.push({ question, options: [optA, optB, optC, optD], correct: ans, marks: 2, caseId, caseText });
+    }
   }
+
   return qs;
 }
 
@@ -1106,75 +870,66 @@ function parseAndStartSingle() {
   const raw = document.getElementById('qa-input-single').value;
   const qs = parseInputSingle(raw);
   const status = document.getElementById('parse-status-single');
+
   if (qs.length === 0) {
     status.style.display = 'block';
     status.className = 'parse-status error';
-    status.textContent = '⚠ Could not parse questions. Please check the format — use pipe (|) or tab-separated with Question | Option A | Option B | Option C | Option D | Correct Answer';
+    status.textContent = '⚠ Error parsing. Check format.';
     return;
   }
+
   status.style.display = 'block';
   status.className = 'parse-status success';
-  status.textContent = `✓ ${qs.length} single MCQ(s) loaded successfully. Starting test...`;
-  setTimeout(() => startTest(qs, 'single'), 800);
+  status.textContent = `✓ ${qs.length} questions loaded.`;
+  setTimeout(() => startTest(qs, 'single'), 500);
 }
 
 function parseAndStartCase() {
   const raw = document.getElementById('qa-input-case').value;
   const qs = parseInputCase(raw);
   const status = document.getElementById('parse-status-case');
+
   if (qs.length === 0) {
     status.style.display = 'block';
     status.className = 'parse-status error';
-    status.textContent = '⚠ Could not parse questions. Please check the format — use pipe (|) or tab-separated with Case ID | Case Scenario | Sl.No | Question | Option A | Option B | Option C | Option D | Correct Answer';
+    status.textContent = '⚠ Error parsing. Check format.';
     return;
   }
+
   status.style.display = 'block';
   status.className = 'parse-status success';
-  status.textContent = `✓ ${qs.length} case-based MCQ(s) loaded successfully. Starting test...`;
-  setTimeout(() => startTest(qs, 'case'), 800);
-}
-
-function clearInput(type) {
-  if (type === 'single') {
-    document.getElementById('qa-input-single').value = '';
-    document.getElementById('parse-status-single').style.display = 'none';
-  } else {
-    document.getElementById('qa-input-case').value = '';
-    document.getElementById('parse-status-case').style.display = 'none';
-  }
+  status.textContent = `✓ ${qs.length} questions loaded.`;
+  setTimeout(() => startTest(qs, 'case'), 500);
 }
 
 function loadSampleSingle() {
-  const sample = `1|An auditor suspects a material misstatement but feels a strong subconscious urge to ignore it. According to Freudian theory, which component drove the urge to avoid discomfort?|Ego|Id|Superego|Conscious mind|A
-2|A senior partner resists new AI-based auditing software. Which Big Five trait is the partner most likely lacking?|Openness to experience|Conscientiousness|Agreeableness|Extraversion|A
-3|A junior accountant learns complex tactics by observing a senior manager. This is central to which theory?|Biological Theory|Social-Cognitive Theory|Trait Theory|Psychoanalytic Theory|B
-4|Under SA 315, the auditor is required to identify and assess risks of material misstatement through:|Understanding the entity only|Analytical procedures only|Understanding entity and its environment|Testing only|C
-5|Which Ind AS deals with Revenue from Contracts with Customers?|Ind AS 109|Ind AS 115|Ind AS 116|Ind AS 112|B`;
+  const sample = `What does SA 570 deal with?|Going Concern|Related Parties|Internal Controls|Fraud|A
+Under Ind AS 109, financial assets are classified into how many categories?|Amortised cost and FVTOCI only|Two|Three|Four|C
+Which AS covers change in accounting policy?|AS 2|AS 8|AS 16|AS 20|B
+Under Ind AS 12, deferred tax is recognised using which method?|Income statement approach|Balance sheet approach|Combined approach|Cash basis approach|B
+Which SA deals with the auditor's responsibility regarding fraud?|SA 240|SA 250|SA 265|SA 315|A`;
   document.getElementById('qa-input-single').value = sample;
-  document.getElementById('parse-status-single').style.display = 'none';
-  document.getElementById('input-section').scrollIntoView({ behavior: 'smooth' });
+  const status = document.getElementById('parse-status-single');
+  status.style.display = 'none';
 }
 
 function loadSampleCase() {
-  const sample = `CASE-01|XYZ Ltd, a listed company, engaged in manufacturing. Recently, changed depreciation method from FYP to WDV. The CFO maintained the change was mandatory per IND AS. The audit team noted this was an accounting policy change, not mandatory.|1|Under which standard is change in accounting policy covered?|IAS 3|IAS 5|IAS 8|IAS 36|C
-CASE-01|XYZ Ltd, a listed company, engaged in manufacturing. Recently, changed depreciation method from FYP to WDV. The CFO maintained the change was mandatory per IND AS. The audit team noted this was an accounting policy change, not mandatory.|2|The CFO's claim of mandatory change is an example of:|Misrepresentation|Error in estimate|Fraud|All of the above|A
-CASE-02|ABC Bank Ltd received a 50-core rupee term loan application from a company with PF defaults and weak financials. The credit committee approved the loan citing 'relationship priority.' The loan was disbursed without conducting proper due diligence.|1|Under which provision of Companies Act, 2013 must board approval be obtained for such large exposures?|Section 177|Section 188|Section 179|Section 186|D
-CASE-02|ABC Bank Ltd received a 50-core rupee term loan application from a company with PF defaults and weak financials. The credit committee approved the loan citing 'relationship priority.' The loan was disbursed without conducting proper due diligence.|2|Which audit standard is most relevant for detecting such lending irregularities?|SA 240|SA 315|SA 330|SA 505|A`;
+  const sample = `CASE-01|ABC Ltd., a manufacturing company, changed its depreciation method from FYP to WDV with effect from 1 April 2024. The CFO proposed applying the change prospectively to avoid restating comparatives, but the auditors flagged the Ind AS 8 implications.|Under which Ind AS is a change in accounting policy covered?|Ind AS 2|Ind AS 8|Ind AS 16|Ind AS 20|B
+CASE-01|ABC Ltd., a manufacturing company, changed its depreciation method from FYP to WDV with effect from 1 April 2024. The CFO proposed applying the change prospectively to avoid restating comparatives, but the auditors flagged the Ind AS 8 implications.|What is the correct accounting treatment for this change?|Apply prospectively only|Apply retrospectively with restatement of comparatives|Disclose in notes only|Treat as prior period error|B
+CASE-02|Metro Infrastructure Pvt. Ltd. entered into a 6-year lease for office space at Rs.4,00,000 per month. The company’s incremental borrowing rate is 9% p.a. There is no purchase option, but the lease grants full right-of-use over the term.|Under Ind AS 116, how should this lease be treated?|Operating lease recognised as monthly expense|Recognise ROU asset and lease liability|Short-term lease exemption applies|Low-value asset exemption applies|B
+CASE-02|Metro Infrastructure Pvt. Ltd. entered into a 6-year lease for office space at Rs.4,00,000 per month. The company’s incremental borrowing rate is 9% p.a. There is no purchase option, but the lease grants full right-of-use over the term.|What is the initial recognition required for this lease?|Record only lease expense in profit and loss|Recognise an asset and a liability on the balance sheet|Create a disclosure note only|No recognition is required at commencement|B
+CASE-03|Prestige Ltd. classified an investment portfolio as FVTOCI under Ind AS 109 and recorded unrealised fair value gains of Rs.50 lakhs at year-end. The finance team is deciding whether the gain should go through profit and loss or OCI.|Where should fair value gains on FVTOCI investments be recognised?|Profit and Loss statement|Other Comprehensive Income|Retained earnings|Reserves and surplus|B`;
   document.getElementById('qa-input-case').value = sample;
-  document.getElementById('parse-status-case').style.display = 'none';
-  document.getElementById('input-section').scrollIntoView({ behavior: 'smooth' });
+  const status = document.getElementById('parse-status-case');
+  status.style.display = 'none';
 }
 
-// ══════════════════════════════════════════
-//  TEST ENGINE
-// ══════════════════════════════════════════
 function startTest(qs, type) {
   questions = qs;
   testType = type;
   userAnswers = new Array(qs.length).fill(null);
   questionTimes = new Array(qs.length).fill(0);
   skipped = new Array(qs.length).fill(false);
-  questionMarks = qs.map(q => q.marks);
   currentQ = 0;
   timeElapsed = 0;
   testStartTime = Date.now();
@@ -1190,8 +945,8 @@ function startTest(qs, type) {
     timeLimitId: 'time-limit-case'
   };
 
-  timeLimit = parseInt(document.getElementById(config.timeLimitId).value) * 60;
-  document.getElementById('test-title-bar').textContent = document.getElementById(config.testNameId).value || 'CA Final Mock Test';
+  timeLimit = parseInt(document.getElementById(config.timeLimitId).value, 10) * 60;
+  document.getElementById('test-title-bar').textContent = document.getElementById(config.testNameId).value || 'Test';
   document.getElementById('student-name-bar').textContent = document.getElementById(config.studentNameId).value || 'Student';
 
   buildQGrid();
@@ -1226,59 +981,51 @@ function updateQGrid() {
 
 function updateSidebarStats() {
   const answered = userAnswers.filter(a => a !== null).length;
-  const sk = skipped.filter(s => s).length;
+  const sk = skipped.filter(Boolean).length;
   document.getElementById('sb-answered').textContent = answered;
   document.getElementById('sb-skipped').textContent = sk;
   document.getElementById('sb-remaining').textContent = questions.length - answered - sk;
-  
-  const totalMarks = questionMarks.reduce((a, b) => a + b, 0);
-  const obtainedMarks = userAnswers.reduce((sum, ans, i) => {
-    if (ans === questions[i].correct) return sum + questionMarks[i];
-    return sum;
-  }, 0);
-  document.getElementById('sb-total-marks').textContent = obtainedMarks + ' / ' + totalMarks;
-  
   document.getElementById('timer-attempted').textContent = answered + ' answered';
-  const pct = ((answered) / questions.length * 100).toFixed(0);
+  const pct = questions.length > 0 ? Math.round((answered / questions.length) * 100) : 0;
   document.getElementById('progress-bar').style.width = pct + '%';
-  document.getElementById('timer-qinfo').textContent = `Question ${currentQ + 1} of ${questions.length}`;
+  document.getElementById('timer-qinfo').textContent = `Q ${currentQ + 1} of ${questions.length}`;
 }
 
 function renderQuestion() {
   const q = questions[currentQ];
-  const marks = testType === 'case' ? `(${q.marks} Marks)` : '(1 Mark)';
-  
-  let html = `
-    <div class="q-number">Question ${currentQ + 1} of ${questions.length} ${marks}</div>
-  `;
-  
-  // Show case scenario if it exists
-  if (q.caseText && q.caseId) {
-    html += `
-      <div class="case-scenario">
-        <div class="case-scenario-label">📚 Case Scenario: ${q.caseId}</div>
-        <div class="case-scenario-text">${q.caseText}</div>
-      </div>
-    `;
+  let html = `<div class="q-number">Question ${currentQ + 1} of ${questions.length}</div>`;
+
+  if (q.caseText && q.caseText.trim()) {
+    html += `<div class="case-scenario">
+      <div class="case-scenario-label">📚 Case: ${escapeHtml(q.caseId)}</div>
+      <div class="case-scenario-text">${escapeHtml(q.caseText)}</div>
+    </div>`;
   }
-  
-  html += `
-    <div class="q-text">${q.question}</div>
-    <div class="options-grid">
-      ${q.options.map((opt, i) => `
-        <button class="option-btn ${userAnswers[currentQ] === OPTS[i] ? 'selected' : ''}"
-          onclick="selectAnswer('${OPTS[i]}', this)">
-          <div class="opt-label">${OPTS[i]}</div>
-          <div class="opt-text">${opt}</div>
-        </button>
-      `).join('')}
-    </div>
-  `;
-  
-  document.getElementById('question-area').innerHTML = html;
-  document.getElementById('btn-prev').style.opacity = currentQ === 0 ? '0.3' : '1';
-  document.getElementById('btn-prev').style.pointerEvents = currentQ === 0 ? 'none' : 'all';
-  document.getElementById('btn-next').textContent = currentQ === questions.length - 1 ? 'Submit →' : 'Next →';
+
+  html += `<div class="q-text">${escapeHtml(q.question)}</div><div class="options-grid">`;
+
+  q.options.forEach((opt, i) => {
+    html += `<button class="option-btn ${userAnswers[currentQ] === OPTS[i] ? 'selected' : ''}" onclick="selectAnswer('${OPTS[i]}', this)">
+      <div class="opt-label">${OPTS[i]}</div>
+      <div class="opt-text">${escapeHtml(opt)}</div>
+    </button>`;
+  });
+
+  html += `</div>`;
+  const qArea = document.getElementById('question-area');
+  if (qArea) qArea.innerHTML = html;
+
+  const btnPrev = document.getElementById('btn-prev');
+  if (btnPrev) {
+    btnPrev.style.opacity = currentQ === 0 ? '0.3' : '1';
+    btnPrev.style.pointerEvents = currentQ === 0 ? 'none' : 'all';
+  }
+
+  const btnNext = document.getElementById('btn-next');
+  if (btnNext) {
+    btnNext.textContent = currentQ === questions.length - 1 ? 'Submit →' : 'Next →';
+  }
+
   updateQGrid();
 }
 
@@ -1287,8 +1034,6 @@ function selectAnswer(opt, btn) {
   skipped[currentQ] = false;
   document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
-  const lbl = btn.querySelector('.opt-label');
-  document.querySelectorAll('.opt-label').forEach(l => { l.style.background=''; l.style.color=''; l.style.border=''; });
   updateQGrid();
 }
 
@@ -1303,243 +1048,230 @@ function goToQ(i) {
   currentQ = i;
   renderQuestion();
 }
+
 function nextQ() {
-  if (currentQ === questions.length - 1) { confirmSubmit(); return; }
+  if (currentQ === questions.length - 1) {
+    confirmSubmit();
+    return;
+  }
   recordTime();
   currentQ++;
   renderQuestion();
 }
+
 function prevQ() {
   if (currentQ === 0) return;
   recordTime();
   currentQ--;
   renderQuestion();
 }
+
 function skipQ() {
   skipped[currentQ] = true;
-  if (userAnswers[currentQ] === null) { /* keep null */ }
   recordTime();
-  if (currentQ < questions.length - 1) { currentQ++; renderQuestion(); }
+  if (currentQ < questions.length - 1) {
+    currentQ++;
+    renderQuestion();
+  }
 }
 
 function startTimer() {
   clearInterval(timerInterval);
   const display = document.getElementById('timer-display');
-  if (timeLimit === 0) { display.textContent = '∞'; return; }
+  display.classList.remove('warning');
+  if (timeLimit === 0) {
+    display.textContent = '∞';
+    return;
+  }
+
   let remaining = timeLimit;
   display.textContent = formatTime(remaining);
+
   timerInterval = setInterval(() => {
     remaining--;
     timeElapsed++;
     display.textContent = formatTime(remaining);
     if (remaining <= 300) display.classList.add('warning');
-    if (remaining <= 0) { clearInterval(timerInterval); submitTest(); }
+    if (remaining <= 0) {
+      clearInterval(timerInterval);
+      submitTest();
+    }
   }, 1000);
 }
+
 function formatTime(s) {
-  const m = Math.floor(s/60); const sec = s%60;
-  return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
 }
 
 function confirmSubmit() {
   const answered = userAnswers.filter(a => a !== null).length;
   const unanswered = questions.length - answered;
   if (unanswered > 0) {
-    if (!confirm(`You have ${unanswered} unanswered question(s). Submit anyway?`)) return;
+    if (!confirm(`${unanswered} question(s) unanswered. Submit anyway?`)) return;
   }
   submitTest();
 }
 
-// ══════════════════════════════════════════
-//  RESULTS ENGINE
-// ══════════════════════════════════════════
 function submitTest() {
   clearInterval(timerInterval);
   recordTime();
   timeElapsed = Math.round((Date.now() - testStartTime) / 1000);
-  buildResults();
   showScreen('screen-results');
+  setTimeout(() => {
+    buildResults();
+    buildReview();
+  }, 100);
 }
 
 function getStats() {
   let correct = 0, wrong = 0, sk = 0;
-  let marksObtained = 0, totalMarks = 0;
   questions.forEach((q, i) => {
-    totalMarks += q.marks;
     if (userAnswers[i] === null) sk++;
-    else if (userAnswers[i] === q.correct) {
-      correct++;
-      marksObtained += q.marks;
-    }
+    else if (userAnswers[i] === q.correct) correct++;
     else wrong++;
   });
   const total = questions.length;
-  const pct = total > 0 ? Math.round(marksObtained / totalMarks * 100) : 0;
-  const accuracy = (correct + wrong) > 0 ? Math.round(correct / (correct + wrong) * 100) : 0;
-  return { correct, wrong, skipped: sk, total, pct, accuracy, marksObtained, totalMarks };
+  const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+  const accuracy = (correct + wrong) > 0 ? Math.round((correct / (correct + wrong)) * 100) : 0;
+  return { correct, wrong, skipped: sk, total, pct, accuracy };
 }
 
 function buildResults() {
   const s = getStats();
-  const testName = document.getElementById('test-title-bar').textContent;
-  document.getElementById('results-subtitle').textContent = testName;
+  document.getElementById('results-subtitle').textContent = document.getElementById('test-title-bar').textContent;
 
-  // Grade message
-  const msgs = ['Keep Practising!', 'Needs Improvement', 'Average Performance', 'Good Performance!', 'Excellent Work!', 'Outstanding Performance!'];
-  const gi = s.pct < 30 ? 0 : s.pct < 45 ? 1 : s.pct < 55 ? 2 : s.pct < 70 ? 3 : s.pct < 85 ? 4 : 5;
+  const msgs = ['Keep Practicing', 'Needs Improvement', 'Good', 'Very Good', 'Excellent', 'Outstanding'];
+  const gi = s.pct < 30 ? 0 : s.pct < 45 ? 1 : s.pct < 60 ? 2 : s.pct < 75 ? 3 : s.pct < 90 ? 4 : 5;
   document.getElementById('results-grade-msg').textContent = msgs[gi];
-
   document.getElementById('score-pct').textContent = s.pct + '%';
   document.getElementById('r-correct').textContent = s.correct;
   document.getElementById('r-wrong').textContent = s.wrong;
   document.getElementById('r-skipped').textContent = s.skipped;
   document.getElementById('r-time').textContent = formatTime(timeElapsed);
   document.getElementById('r-accuracy').textContent = s.accuracy + '%';
-  document.getElementById('r-marks').textContent = s.marksObtained + ' / ' + s.totalMarks;
 
-  // Destroy old charts
-  Object.values(charts).forEach(c => { if(c) c.destroy(); });
+  Object.values(charts).forEach(c => { if (c && c.destroy) c.destroy(); });
   charts = {};
 
-  // Score ring
-  const ringCtx = document.getElementById('score-ring-chart').getContext('2d');
-  charts.ring = new Chart(ringCtx, {
-    type: 'doughnut',
-    data: { datasets: [{ data: [s.pct, 100 - s.pct], backgroundColor: ['#c9a84c', 'rgba(255,255,255,0.05)'], borderWidth: 0, circumference: 360, rotation: -90 }] },
-    options: { cutout: '80%', plugins: { legend: { display: false }, tooltip: { enabled: false } }, animation: { duration: 1000 } }
-  });
-
-  // Breakdown donut
-  const bdCtx = document.getElementById('chart-breakdown').getContext('2d');
-  charts.breakdown = new Chart(bdCtx, {
-    type: 'doughnut',
-    data: {
-      labels: ['Correct', 'Wrong', 'Skipped'],
-      datasets: [{ data: [s.correct, s.wrong, s.skipped], backgroundColor: ['#1a9e6e', '#e05c6f', '#f59e0b'], borderWidth: 2, borderColor: '#111f38' }]
-    },
-    options: { plugins: { legend: { labels: { color: '#9bacc8', font: { size: 12, family: 'DM Sans' }, padding: 16 } } }, animation: { duration: 800 } }
-  });
-
-  // Q-wise bar
-  const qwCtx = document.getElementById('chart-qwise').getContext('2d');
-  const qLabels = questions.map((_, i) => 'Q' + (i+1));
-  const qData = questions.map((q, i) => userAnswers[i] === null ? 0 : userAnswers[i] === q.correct ? 1 : -1);
-  const qColors = qData.map(v => v === 1 ? '#1a9e6e' : v === -1 ? '#e05c6f' : '#f59e0b');
-  charts.qwise = new Chart(qwCtx, {
-    type: 'bar',
-    data: { labels: qLabels, datasets: [{ data: qData.map(v => Math.abs(v) || 0.4), backgroundColor: qColors, borderRadius: 4 }] },
-    options: {
-      plugins: { legend: { display: false }, tooltip: {
-        callbacks: { label: (ctx) => { const v = qData[ctx.dataIndex]; return v === 1 ? 'Correct' : v === -1 ? 'Wrong' : 'Skipped'; } }
-      }},
-      scales: {
-        x: { ticks: { color: '#6b82a0', font: { size: 10 } }, grid: { display: false } },
-        y: { display: false, max: 1.2 }
-      }, animation: { duration: 600 }
-    }
-  });
-
-  // Speed vs accuracy scatter
-  const svCtx = document.getElementById('chart-speed').getContext('2d');
-  const speedData = questions.map((q, i) => ({
-    x: questionTimes[i],
-    y: userAnswers[i] === null ? 0 : userAnswers[i] === q.correct ? 1 : -1,
-    label: 'Q' + (i + 1)
-  }));
-  charts.speed = new Chart(svCtx, {
-    type: 'scatter',
-    data: {
-      datasets: [{
-        label: 'Correct',
-        data: speedData.filter(d => d.y === 1),
-        backgroundColor: '#1a9e6e',
-        borderRadius: 4
-      }, {
-        label: 'Wrong',
-        data: speedData.filter(d => d.y === -1),
-        backgroundColor: '#e05c6f',
-        borderRadius: 4
-      }, {
-        label: 'Skipped',
-        data: speedData.filter(d => d.y === 0),
-        backgroundColor: '#f59e0b',
-        borderRadius: 4
-      }]
-    },
-    options: {
-      plugins: { legend: { labels: { color: '#9bacc8', font: { size: 11 } } } },
-      scales: {
-        x: { title: { display: true, text: 'Time (seconds)', color: '#9bacc8' }, ticks: { color: '#6b82a0' }, grid: { color: 'rgba(201,168,76,0.05)' } },
-        y: { title: { display: true, text: 'Result', color: '#9bacc8' }, ticks: { color: '#6b82a0' }, grid: { color: 'rgba(201,168,76,0.05)' } }
+  const ringCanvas = document.getElementById('score-ring-chart');
+  if (ringCanvas && typeof Chart !== 'undefined') {
+    const ringCtx = ringCanvas.getContext('2d');
+    charts.ring = new Chart(ringCtx, {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: [s.pct, 100 - s.pct],
+          backgroundColor: ['#c9a84c', 'rgba(255,255,255,0.05)'],
+          borderWidth: 0
+        }]
       },
-      animation: { duration: 600 }
-    }
-  });
-
-  // Time per question
-  const timePerQ = document.getElementById('time-per-q');
-  timePerQ.innerHTML = '';
-  questions.forEach((_, i) => {
-    const maxTime = Math.max(...questionTimes);
-    const barWidth = maxTime > 0 ? (questionTimes[i] / maxTime * 100) : 0;
-    const html = `
-      <div class="time-row">
-        <div class="time-q-num">Q${i + 1}</div>
-        <div class="time-bar-track">
-          <div class="time-bar-fill" style="width:${barWidth}%;background:${userAnswers[i] === questions[i].correct ? '#1a9e6e' : userAnswers[i] ? '#e05c6f' : '#f59e0b'};"></div>
-        </div>
-        <div class="time-val">${questionTimes[i]}s</div>
-      </div>
-    `;
-    timePerQ.innerHTML += html;
-  });
-
-  // Weak areas
-  const weakList = document.getElementById('weak-list');
-  const wrongQs = questions
-    .map((q, i) => ({ idx: i, time: questionTimes[i], q }))
-    .filter((item, i) => userAnswers[i] !== questions[i].correct && userAnswers[i] !== null)
-    .sort((a, b) => b.time - a.time)
-    .slice(0, 5);
-  
-  if (wrongQs.length === 0) {
-    weakList.innerHTML = '<p style="color:var(--emerald2);font-size:13px;">🎉 No weak areas! All answered questions are correct.</p>';
-  } else {
-    weakList.innerHTML = wrongQs.map(item => {
-      const pct = (item.time / Math.max(...questionTimes) * 100).toFixed(0);
-      return `
-        <div class="weak-item">
-          <div class="weak-label">Q ${item.idx + 1}</div>
-          <div class="weak-bar-wrap">
-            <div class="weak-bar-track">
-              <div style="height:100%;background:#e05c6f;border-radius:99px;width:${pct}%;"></div>
-            </div>
-          </div>
-          <div class="weak-pct">${item.time}s</div>
-        </div>
-      `;
-    }).join('');
+      options: {
+        cutout: '80%',
+        plugins: { legend: { display: false }, tooltip: { enabled: false } }
+      }
+    });
   }
 
-  // Radar chart
-  const radarCtx = document.getElementById('chart-radar').getContext('2d');
-  charts.radar = new Chart(radarCtx, {
-    type: 'radar',
-    data: {
-      labels: ['Accuracy', 'Speed', 'Completion', 'Consistency'],
-      datasets: [{
-        data: [s.accuracy, Math.min(100, 100 - (Math.round(timeElapsed / 60) % 100)), 100, Math.round((s.correct / s.total) * 100)],
-        borderColor: '#c9a84c',
-        backgroundColor: 'rgba(201,168,76,0.1)',
-        borderWidth: 2,
-        pointBackgroundColor: '#c9a84c'
-      }]
-    },
-    options: {
-      plugins: { legend: { display: false } },
-      scales: { r: { min: 0, max: 100, ticks: { color: '#6b82a0' }, grid: { color: 'rgba(201,168,76,0.1)' } } },
-      animation: { duration: 800 }
+  const bdCanvas = document.getElementById('chart-breakdown');
+  if (bdCanvas && typeof Chart !== 'undefined') {
+    const bdCtx = bdCanvas.getContext('2d');
+    charts.breakdown = new Chart(bdCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Correct', 'Wrong', 'Skipped'],
+        datasets: [{
+          data: [s.correct, s.wrong, s.skipped],
+          backgroundColor: ['#1a9e6e', '#e05c6f', '#f59e0b'],
+          borderColor: '#111f38',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        plugins: { legend: { labels: { color: '#9bacc8', font: { size: 12 } } } }
+      }
+    });
+  }
+
+  const qwCanvas = document.getElementById('chart-qwise');
+  if (qwCanvas && typeof Chart !== 'undefined') {
+    const qwCtx = qwCanvas.getContext('2d');
+    const qLabels = questions.map((_, i) => 'Q' + (i + 1));
+    const qData = questions.map((q, i) => userAnswers[i] === q.correct ? 1 : userAnswers[i] === null ? 0 : -1);
+    const qColors = qData.map(v => v === 1 ? '#1a9e6e' : v === -1 ? '#e05c6f' : '#f59e0b');
+
+    charts.qwise = new Chart(qwCtx, {
+      type: 'bar',
+      data: {
+        labels: qLabels,
+        datasets: [{
+          data: qData.map(v => Math.abs(v) || 0.3),
+          backgroundColor: qColors,
+          borderRadius: 4
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: '#6b82a0' }, grid: { display: false } },
+          y: { display: false, max: 1.2 }
+        }
+      }
+    });
+  }
+
+  const timePerQ = document.getElementById('time-per-q');
+  if (timePerQ) {
+    timePerQ.innerHTML = '';
+    const maxTime = Math.max(...questionTimes, 1);
+    questions.forEach((_, i) => {
+      const barWidth = (questionTimes[i] / maxTime * 100);
+      const color = userAnswers[i] === questions[i].correct ? '#1a9e6e' : userAnswers[i] ? '#e05c6f' : '#f59e0b';
+      const html = `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <div style="font-size:11px;color:var(--text3);width:20px;">Q${i + 1}</div>
+        <div style="flex:1;height:8px;background:var(--surface3);border-radius:99px;overflow:hidden;">
+          <div style="width:${barWidth}%;height:100%;background:${color};"></div>
+        </div>
+        <div style="font-size:11px;color:var(--text2);width:30px;text-align:right;">${questionTimes[i]}s</div>
+      </div>`;
+      timePerQ.innerHTML += html;
+    });
+  }
+}
+
+function buildReview() {
+  const list = document.getElementById('review-list');
+  if (!list) return;
+
+  list.innerHTML = '';
+  questions.forEach((q, i) => {
+    const userAns = userAnswers[i];
+    const isCorrect = userAns === q.correct;
+
+    let html = `<div class="review-q">
+      <div class="review-q-num">Q ${i + 1} - ${isCorrect ? '✓ Correct' : userAns === null ? '⊘ Skipped' : '✗ Wrong'}</div>`;
+
+    if (q.caseText) {
+      html += `<div class="case-scenario" style="margin-bottom:16px;">
+        <div class="case-scenario-label">📚 Case: ${escapeHtml(q.caseId)}</div>
+        <div class="case-scenario-text">${escapeHtml(q.caseText)}</div>
+      </div>`;
     }
+
+    html += `<div class="review-q-text">${escapeHtml(q.question)}</div>
+      <div class="review-options">`;
+
+    q.options.forEach((opt, j) => {
+      const lbl = OPTS[j];
+      let cls = 'neutral';
+      if (lbl === q.correct) cls = 'correct';
+      else if (lbl === userAns && !isCorrect) cls = 'wrong';
+      html += `<div class="review-opt ${cls}"><strong>${lbl}.</strong> ${escapeHtml(opt)}</div>`;
+    });
+
+    html += `</div><div style="font-size:11px;color:var(--text3);margin-top:8px;">Time: ${questionTimes[i]}s</div></div>`;
+    list.innerHTML += html;
   });
 }
 
@@ -1550,53 +1282,6 @@ function retakeTest() {
 function printReport() {
   window.print();
 }
-
-// ══════════════════════════════════════════
-//  REVIEW
-// ══════════════════════════════════════════
-function buildReview() {
-  const list = document.getElementById('review-list');
-  list.innerHTML = '';
-  questions.forEach((q, i) => {
-    const userAns = userAnswers[i];
-    const isCorrect = userAns === q.correct;
-    const html = `
-      <div class="review-q">
-        <div class="review-q-head">
-          <div class="review-q-num">Q ${i + 1}</div>
-          <div>${isCorrect ? '✓ Correct' : userAns === null ? '⊘ Skipped' : '✗ Wrong'}</div>
-        </div>
-        <div class="review-q-text">${q.question}</div>
-        <div class="review-options">
-          ${q.options.map((opt, j) => {
-            const lbl = OPTS[j];
-            let cls = 'neutral';
-            if (lbl === q.correct) cls = 'correct-ans';
-            else if (lbl === userAns && !isCorrect) cls = 'user-wrong';
-            return `
-              <div class="review-opt ${cls}">
-                <div class="review-opt-label">${lbl}</div>
-                <div>${opt}</div>
-              </div>
-            `;
-          }).join('')}
-        </div>
-        <div class="review-time">⏱ Time spent: ${questionTimes[i]}s</div>
-      </div>
-    `;
-    list.innerHTML += html;
-  });
-}
-
-// ══════════════════════════════════════════
-//  ON RESULTS PAGE LOAD
-// ══════════════════════════════════════════
-const observer = new MutationObserver(() => {
-  if (document.getElementById('screen-results').classList.contains('active')) {
-    buildReview();
-  }
-});
-observer.observe(document.body, { attributes: true, subtree: true });
 </script>
 </body>
 </html>
