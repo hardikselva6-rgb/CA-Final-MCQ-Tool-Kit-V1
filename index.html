@@ -105,6 +105,8 @@ body::before {
 
 .topbar-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 600; }
 .topbar-sub { font-size: 11px; color: var(--text3); }
+.topbar-sub a { color: var(--gold2); text-decoration: none; }
+.topbar-sub a:hover { text-decoration: underline; }
 
 .hero {
   text-align: center; padding: 70px 32px 50px;
@@ -364,6 +366,133 @@ textarea.qa-input:focus { outline: none; border-color: var(--gold); }
   .reports-grid { grid-template-columns: 1fr; }
   .tabs-container { flex-wrap: wrap; }
 }
+
+
+/* FLOATING CALCULATOR */
+.calc-fab {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: var(--navy);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+  cursor: pointer;
+  z-index: 1200;
+  user-select: none;
+  font-size: 24px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.calc-fab.show { display: flex; }
+.calc-fab:hover { transform: translateY(-2px); }
+
+.calculator-panel {
+  position: fixed;
+  right: 22px;
+  bottom: 92px;
+  width: 300px;
+  background: rgba(17,31,56,0.98);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.42);
+  display: none;
+  z-index: 1201;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+.calculator-panel.show { display: block; }
+.calc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  cursor: move;
+  background: linear-gradient(180deg, rgba(201,168,76,0.08), rgba(255,255,255,0));
+  border-bottom: 1px solid var(--border);
+}
+.calc-title {
+  font-size: 12px;
+  letter-spacing: 0.4px;
+  color: var(--gold3);
+  font-weight: 600;
+}
+.calc-header-actions {
+  display: flex;
+  gap: 8px;
+}
+.calc-header-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text2);
+  cursor: pointer;
+  font-size: 13px;
+}
+.calc-header-btn:hover { background: var(--surface3); }
+.calc-body { padding: 14px; }
+.calc-display {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #0b1930;
+  color: var(--text);
+  padding: 16px 14px;
+  text-align: right;
+  font-size: 28px;
+  font-family: 'DM Sans', sans-serif;
+  margin-bottom: 12px;
+}
+.calc-subdisplay {
+  min-height: 18px;
+  text-align: right;
+  color: var(--text3);
+  font-size: 11px;
+  padding: 0 4px 8px;
+}
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.calc-btn {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface2);
+  color: var(--text);
+  min-height: 48px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.calc-btn:hover { background: var(--surface3); }
+.calc-btn.operator { color: var(--gold2); }
+.calc-btn.action { color: var(--rose2); }
+.calc-btn.equal {
+  background: linear-gradient(135deg, var(--emerald), var(--emerald2));
+  color: #fff;
+  border-color: rgba(34,201,141,0.4);
+}
+.calc-btn.zero { grid-column: span 2; }
+@media (max-width: 768px) {
+  .calculator-panel {
+    width: calc(100vw - 28px);
+    right: 14px;
+    bottom: 84px;
+  }
+  .calc-fab {
+    right: 14px;
+    bottom: 14px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -373,7 +502,7 @@ textarea.qa-input:focus { outline: none; border-color: var(--gold); }
       <div class="topbar-logo">CA</div>
       <div>
         <div class="topbar-title">CA Final MCQ Tool</div>
-        <div class="topbar-sub">Assessment &amp; Question Generation Platform</div>
+        <div class="topbar-sub">Created by Selva Velu Mayil · <a href="https://www.linkedin.com/in/selva-velu-mayil-r-4922aa2a5" target="_blank" rel="noopener noreferrer">LinkedIn</a></div>
       </div>
     </div>
   </div>
@@ -606,7 +735,7 @@ Apply the above prompt to the uploaded source and give me 50 case-based MCQs.</d
       <div class="topbar-logo">CA</div>
       <div>
         <div class="topbar-title" id="test-title-bar">Test</div>
-        <div class="topbar-sub" id="student-name-bar">Student</div>
+        <div class="topbar-sub"><span id="student-name-bar">Student</span> · Created by Selva Velu Mayil · <a href="https://www.linkedin.com/in/selva-velu-mayil-r-4922aa2a5" target="_blank" rel="noopener noreferrer">LinkedIn</a></div>
       </div>
     </div>
     <button class="btn btn-outline" onclick="confirmSubmit()" style="padding:9px 18px;font-size:13px;">Submit</button>
@@ -654,7 +783,7 @@ Apply the above prompt to the uploaded source and give me 50 case-based MCQs.</d
       <div class="topbar-logo">CA</div>
       <div>
         <div class="topbar-title">Results</div>
-        <div class="topbar-sub" id="results-subtitle">Test</div>
+        <div class="topbar-sub"><span id="results-subtitle">Test</span> · Created by Selva Velu Mayil · <a href="https://www.linkedin.com/in/selva-velu-mayil-r-4922aa2a5" target="_blank" rel="noopener noreferrer">LinkedIn</a></div>
       </div>
     </div>
     <button class="btn btn-outline" onclick="showScreen('screen-review')" style="font-size:13px;padding:9px 18px;">Review</button>
@@ -713,7 +842,7 @@ Apply the above prompt to the uploaded source and give me 50 case-based MCQs.</d
       <div class="topbar-logo">CA</div>
       <div>
         <div class="topbar-title">Answer Review</div>
-        <div class="topbar-sub">Detailed analysis</div>
+        <div class="topbar-sub">Detailed analysis · Created by Selva Velu Mayil · <a href="https://www.linkedin.com/in/selva-velu-mayil-r-4922aa2a5" target="_blank" rel="noopener noreferrer">LinkedIn</a></div>
       </div>
     </div>
     <button class="btn btn-outline" onclick="showScreen('screen-results')" style="font-size:13px;padding:9px 18px;">← Back</button>
@@ -721,6 +850,52 @@ Apply the above prompt to the uploaded source and give me 50 case-based MCQs.</d
   <div class="review-wrap">
     <h2>Your Answers</h2>
     <div id="review-list"></div>
+  </div>
+</div>
+
+
+
+<div id="calculator-fab" class="calc-fab" title="Open calculator" onclick="toggleCalculator()">🧮</div>
+<div id="calculator-panel" class="calculator-panel" aria-label="Floating calculator">
+  <div class="calc-header" id="calc-drag-handle">
+    <div class="calc-title">Quick Calculator</div>
+    <div class="calc-header-actions">
+      <button class="calc-header-btn" type="button" onclick="clearCalculator()" title="Clear">C</button>
+      <button class="calc-header-btn" type="button" onclick="toggleCalculator(false)" title="Close">✕</button>
+    </div>
+  </div>
+  <div class="calc-body">
+    <div class="calc-subdisplay" id="calc-subdisplay"></div>
+    <input id="calc-display" class="calc-display" type="text" value="0" readonly>
+    <div class="calc-grid">
+      <button class="calc-btn action" type="button" onclick="clearCalculator()">AC</button>
+      <button class="calc-btn action" type="button" onclick="backspaceCalculator()">⌫</button>
+      <button class="calc-btn operator" type="button" onclick="appendCalculator('(')">(</button>
+      <button class="calc-btn operator" type="button" onclick="appendCalculator(')')">)</button>
+
+      <button class="calc-btn" type="button" onclick="appendCalculator('7')">7</button>
+      <button class="calc-btn" type="button" onclick="appendCalculator('8')">8</button>
+      <button class="calc-btn" type="button" onclick="appendCalculator('9')">9</button>
+      <button class="calc-btn operator" type="button" onclick="appendCalculator('/')">÷</button>
+
+      <button class="calc-btn" type="button" onclick="appendCalculator('4')">4</button>
+      <button class="calc-btn" type="button" onclick="appendCalculator('5')">5</button>
+      <button class="calc-btn" type="button" onclick="appendCalculator('6')">6</button>
+      <button class="calc-btn operator" type="button" onclick="appendCalculator('*')">×</button>
+
+      <button class="calc-btn" type="button" onclick="appendCalculator('1')">1</button>
+      <button class="calc-btn" type="button" onclick="appendCalculator('2')">2</button>
+      <button class="calc-btn" type="button" onclick="appendCalculator('3')">3</button>
+      <button class="calc-btn operator" type="button" onclick="appendCalculator('-')">−</button>
+
+      <button class="calc-btn zero" type="button" onclick="appendCalculator('0')">0</button>
+      <button class="calc-btn" type="button" onclick="appendCalculator('.')">.</button>
+      <button class="calc-btn operator" type="button" onclick="appendCalculator('+')">+</button>
+
+      <button class="calc-btn operator" type="button" onclick="appendCalculator('%')">%</button>
+      <button class="calc-btn" type="button" onclick="appendCalculator('00')">00</button>
+      <button class="calc-btn equal" type="button" style="grid-column: span 2;" onclick="evaluateCalculator()">=</button>
+    </div>
   </div>
 </div>
 
@@ -760,6 +935,7 @@ function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0, 0);
+  updateCalculatorVisibility();
 }
 
 function scrollToInput() {
@@ -1275,6 +1451,155 @@ function buildReview() {
   });
 }
 
+
+
+let calcExpression = '';
+let calcDrag = { active: false, startX: 0, startY: 0, left: 0, top: 0 };
+
+function getCalculatorElements() {
+  return {
+    fab: document.getElementById('calculator-fab'),
+    panel: document.getElementById('calculator-panel'),
+    display: document.getElementById('calc-display'),
+    subdisplay: document.getElementById('calc-subdisplay'),
+    dragHandle: document.getElementById('calc-drag-handle')
+  };
+}
+
+function formatCalcExpression(expr) {
+  return (expr || '')
+    .replace(/\*/g, '×')
+    .replace(/\//g, '÷');
+}
+
+function refreshCalculatorDisplay(resultText) {
+  const { display, subdisplay } = getCalculatorElements();
+  if (!display || !subdisplay) return;
+  display.value = resultText ?? (calcExpression || '0');
+  subdisplay.textContent = formatCalcExpression(calcExpression);
+}
+
+function normalizePercent(expr) {
+  return expr.replace(/(\d+(?:\.\d+)?)%/g, '($1/100)');
+}
+
+function appendCalculator(value) {
+  if (calcExpression === 'Error') calcExpression = '';
+  if (value === '.' ) {
+    const tail = calcExpression.split(/[+\-*/()%]/).pop();
+    if (tail.includes('.')) return;
+  }
+  calcExpression += value;
+  refreshCalculatorDisplay(calcExpression || '0');
+}
+
+function clearCalculator() {
+  calcExpression = '';
+  refreshCalculatorDisplay('0');
+}
+
+function backspaceCalculator() {
+  if (calcExpression === 'Error') {
+    clearCalculator();
+    return;
+  }
+  calcExpression = calcExpression.slice(0, -1);
+  refreshCalculatorDisplay(calcExpression || '0');
+}
+
+function evaluateCalculator() {
+  try {
+    if (!calcExpression.trim()) return;
+    const normalized = normalizePercent(calcExpression);
+    if (!/^[0-9+\-*/().%\s]+$/.test(calcExpression)) throw new Error('Invalid input');
+    const result = Function('return (' + normalized + ')')();
+    if (!Number.isFinite(result)) throw new Error('Invalid result');
+    const pretty = parseFloat(Number(result).toFixed(10)).toString();
+    refreshCalculatorDisplay(pretty);
+    calcExpression = pretty;
+  } catch (e) {
+    calcExpression = 'Error';
+    refreshCalculatorDisplay('Error');
+  }
+}
+
+function toggleCalculator(forceOpen) {
+  const { panel } = getCalculatorElements();
+  if (!panel) return;
+  const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : !panel.classList.contains('show');
+  panel.classList.toggle('show', shouldOpen);
+}
+
+function updateCalculatorVisibility() {
+  const { fab, panel } = getCalculatorElements();
+  if (!fab || !panel) return;
+  const isTestVisible = document.getElementById('screen-test')?.classList.contains('active');
+  fab.classList.toggle('show', !!isTestVisible);
+  if (!isTestVisible) panel.classList.remove('show');
+}
+
+function initCalculatorDrag() {
+  const { panel, dragHandle } = getCalculatorElements();
+  if (!panel || !dragHandle) return;
+  dragHandle.addEventListener('mousedown', (e) => {
+    calcDrag.active = true;
+    const rect = panel.getBoundingClientRect();
+    panel.style.left = rect.left + 'px';
+    panel.style.top = rect.top + 'px';
+    panel.style.right = 'auto';
+    panel.style.bottom = 'auto';
+    calcDrag.startX = e.clientX;
+    calcDrag.startY = e.clientY;
+    calcDrag.left = rect.left;
+    calcDrag.top = rect.top;
+    document.body.style.userSelect = 'none';
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!calcDrag.active) return;
+    const { panel } = getCalculatorElements();
+    const nextLeft = calcDrag.left + (e.clientX - calcDrag.startX);
+    const nextTop = calcDrag.top + (e.clientY - calcDrag.startY);
+    panel.style.left = Math.max(8, nextLeft) + 'px';
+    panel.style.top = Math.max(8, nextTop) + 'px';
+  });
+
+  document.addEventListener('mouseup', () => {
+    calcDrag.active = false;
+    document.body.style.userSelect = '';
+  });
+}
+
+function initCalculatorKeyboard() {
+  document.addEventListener('keydown', (e) => {
+    const { panel } = getCalculatorElements();
+    const isOpen = panel && panel.classList.contains('show');
+    const isTestVisible = document.getElementById('screen-test')?.classList.contains('active');
+    if (!isTestVisible) return;
+
+    if (e.key.toLowerCase() === 'c' && e.altKey) {
+      e.preventDefault();
+      toggleCalculator();
+      return;
+    }
+
+    if (!isOpen) return;
+    if (/^[0-9]$/.test(e.key)) { e.preventDefault(); appendCalculator(e.key); return; }
+    if (['+', '-', '*', '/', '(', ')', '.'].includes(e.key)) { e.preventDefault(); appendCalculator(e.key); return; }
+    if (e.key === '%') { e.preventDefault(); appendCalculator('%'); return; }
+    if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); evaluateCalculator(); return; }
+    if (e.key === 'Backspace') { e.preventDefault(); backspaceCalculator(); return; }
+    if (e.key === 'Escape') { e.preventDefault(); toggleCalculator(false); }
+  });
+}
+
+function initCalculator() {
+  refreshCalculatorDisplay('0');
+  initCalculatorDrag();
+  initCalculatorKeyboard();
+  updateCalculatorVisibility();
+}
+
 function retakeTest() {
   showScreen('screen-home');
 }
@@ -1282,6 +1607,8 @@ function retakeTest() {
 function printReport() {
   window.print();
 }
+
+initCalculator();
 </script>
 </body>
 </html>
