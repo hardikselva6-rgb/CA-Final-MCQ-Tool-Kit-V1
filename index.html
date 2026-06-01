@@ -128,6 +128,70 @@ body::before {
 
 .hero p { font-size: 16px; color: var(--text2); max-width: 520px; margin: 0 auto 36px; }
 
+.quick-guide {
+  max-width: 1100px;
+  margin: 26px auto 0;
+  padding: 0 24px;
+}
+.quick-guide-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+}
+.quick-guide-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+.quick-guide-card p {
+  font-size: 13px;
+  color: var(--text2);
+  margin-bottom: 14px;
+  line-height: 1.6;
+}
+.quick-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.quick-step {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+}
+.quick-step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: var(--navy);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.quick-step h4 {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.quick-step div:last-child {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.55;
+}
+@media (max-width: 900px) {
+  .quick-guide-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .quick-guide { padding: 0 16px; }
+  .quick-guide-grid { grid-template-columns: 1fr; }
+}
+
+
 .input-section { max-width: 860px; margin: 0 auto; padding: 48px 24px; }
 .input-section h2 {
   font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 8px;
@@ -516,6 +580,35 @@ textarea.qa-input:focus { outline: none; border-color: var(--gold); }
     </div>
   </div>
 
+  <div class="quick-guide">
+    <div class="quick-guide-card">
+      <h3>Quick Guide — How to Use This Site</h3>
+      <p>This tool lets you load your own MCQs, take a timed test, review answers, use NotebookLM prompts, and study your reports. Use the section below as a quick start guide.</p>
+      <div class="quick-guide-grid">
+        <div class="quick-step">
+          <div class="quick-step-num">1</div>
+          <h4>Choose Test Type</h4>
+          <div>Select <strong>Single MCQs</strong> for 1-mark questions or <strong>Case-based MCQs</strong> for 2-mark scenario questions.</div>
+        </div>
+        <div class="quick-step">
+          <div class="quick-step-num">2</div>
+          <h4>Paste or Load Questions</h4>
+          <div>Paste your questions in the required format, or click <strong>Load 5 Sample Questions</strong> to test the tool instantly.</div>
+        </div>
+        <div class="quick-step">
+          <div class="quick-step-num">3</div>
+          <h4>Start and Attempt</h4>
+          <div>Enter your name, choose a time limit, click <strong>Start Test</strong>, answer questions, and move using the buttons or question grid.</div>
+        </div>
+        <div class="quick-step">
+          <div class="quick-step-num">4</div>
+          <h4>Review Reports &amp; AI Prompts</h4>
+          <div>After submission, review score, charts, time reports, and if needed scroll further down to use the <strong>AI Prompts for Question Generation</strong> section.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="input-section" id="input-section">
     <h2>Load Your Questions</h2>
 
@@ -826,6 +919,12 @@ Apply the above prompt to the uploaded source and give me 50 case-based MCQs.</d
       <h3>Time per Question</h3>
       <p>Seconds spent on each question</p>
       <div id="time-per-q" style="max-height:250px;overflow-y:auto;"></div>
+    </div>
+
+    <div class="report-card">
+      <h3>Average Time per Question</h3>
+      <p>Overall average and timing summary</p>
+      <div id="avg-time-report"></div>
     </div>
   </div>
 
@@ -1413,6 +1512,38 @@ function buildResults() {
       </div>`;
       timePerQ.innerHTML += html;
     });
+  }
+
+  const avgTimeReport = document.getElementById('avg-time-report');
+  if (avgTimeReport) {
+    const totalQuestions = questions.length || 1;
+    const avgSeconds = Math.round(questionTimes.reduce((a, b) => a + b, 0) / totalQuestions);
+    const answeredCount = userAnswers.filter(a => a !== null).length;
+    const answeredAvgSeconds = answeredCount > 0
+      ? Math.round(questionTimes.filter((_, i) => userAnswers[i] !== null).reduce((a, b) => a + b, 0) / answeredCount)
+      : 0;
+    const maxSeconds = Math.max(...questionTimes, 0);
+    const slowestIndex = questionTimes.findIndex(t => t === maxSeconds);
+
+    avgTimeReport.innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="padding:16px;border-radius:14px;background:var(--surface2);border:1px solid var(--border);text-align:center;">
+          <div style="font-size:12px;color:var(--text3);margin-bottom:6px;">Overall Average</div>
+          <div style="font-family:'Playfair Display', serif;font-size:34px;color:var(--gold);font-weight:700;">${avgSeconds}s</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:6px;">Average time taken per question</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div style="padding:12px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:5px;">Answered Questions Avg</div>
+            <div style="font-size:22px;color:var(--emerald2);font-weight:700;">${answeredAvgSeconds}s</div>
+          </div>
+          <div style="padding:12px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:5px;">Slowest Question</div>
+            <div style="font-size:22px;color:var(--rose2);font-weight:700;">${slowestIndex >= 0 ? `Q${slowestIndex + 1}` : '-'}</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:4px;">${maxSeconds}s</div>
+          </div>
+        </div>
+      </div>`;
   }
 }
 
